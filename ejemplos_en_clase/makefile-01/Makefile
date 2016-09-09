@@ -21,3 +21,9 @@ clean:
 install: binario
 	[ ! -d $(DESTDIR) ] && mkdir -p $(DESTDIR)
 	cp calculadora $(DESTDIR)
+
+uninstall:
+	-rm $(DESTDIR)/calculadora
+	@echo "Es una lástima que ya no quieras usar esta calculadora"
+
+.PHONY: clean install uninstall
