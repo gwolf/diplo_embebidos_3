@@ -1,0 +1,19 @@
+
+
+all: binario
+
+objetos: calculadora.o func_calc.o
+	touch objetos
+
+calculadora.o: calculadora.c
+	gcc -c -o calculadora.o calculadora.c
+
+func_calc.o: func_calc.c
+	gcc -c -o func_calc.o func_calc.c
+
+binario: objetos
+	gcc func_calc.o calculadora.o -o calculadora
+	touch binario
+
+clean:
+	rm -f *.o calculadora binario objetos
