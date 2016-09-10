@@ -1,0 +1,16 @@
+Description: Corrijo lógica booleana equivocada
+ El autor no sabe diferenciar un && de un ||
+Author: Fulano D. Tal <fulano@tal.org>
+Last-Update: 2016-09-10
+
+--- calculadora-1.0.orig/Makefile
++++ calculadora-1.0/Makefile
+@@ -19,7 +19,7 @@ clean:
+ 	rm -f *.o calculadora binario objetos
+ 
+ install: binario
+-	[ ! -d $(DESTDIR) ] && mkdir -p $(DESTDIR)
++	[ -d $(DESTDIR) ] || mkdir -p $(DESTDIR)
+ 	cp calculadora $(DESTDIR)
+ 
+ uninstall:

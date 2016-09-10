@@ -1,0 +1,33 @@
+Description: Modifica el makefile para usar un bindir
+ En vez de sólo usar DESTDIR
+Author: Fulano D. Tal <fulano@tal.org>
+
+--- calculadora-1.0.orig/Makefile
++++ calculadora-1.0/Makefile
+@@ -1,7 +1,10 @@
+ 
+ GCC = gcc
+ CFLAGS = 
+-DESTDIR = /usr/local/bin
++DESTDIR = /
++
++prefix = usr
++bindir = $(prefix)/bin
+ 
+ all: binario
+ 
+@@ -19,11 +22,11 @@ clean:
+ 	rm -f *.o calculadora binario objetos
+ 
+ install: binario
+-	[ -d $(DESTDIR) ] || mkdir -p $(DESTDIR)
+-	cp calculadora $(DESTDIR)
++	[ -d $(DESTDIR)/$(bindir) ] || mkdir -p $(DESTDIR)/$(bindir)
++	cp calculadora $(DESTDIR)/$(bindir)
+ 
+ uninstall:
+-	-rm $(DESTDIR)/calculadora
++	-rm $(DESTDIR)/$(bindir)/calculadora
+ 	@echo "Es una lástima que ya no quieras usar esta calculadora"
+ 
+ .PHONY: clean install uninstall
