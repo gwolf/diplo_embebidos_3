@@ -1,0 +1,1 @@
+int esEntero( char *entrada );
