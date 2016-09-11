@@ -25,7 +25,7 @@ run: bin
 	./$(OUT)
 
 install: bin
-	[ -d $(DESTDIR) ] && mkdir -p $(DESTDIR)
+	[ -d $(DESTDIR) ] || mkdir -p $(DESTDIR)
 	cp ./$(OUT) $(DESTDIR)
 
 uninstall:
