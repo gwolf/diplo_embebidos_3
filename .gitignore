@@ -1,0 +1,8 @@
+#archivo .gitignore
+#excluye los archivos con los patrones siguientes enlistados
+#ignora los ficheros *.a *.o
+*.[ao]
+
+#ignora los ficheros que terminan en ~
+*~
+
