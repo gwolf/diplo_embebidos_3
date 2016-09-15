@@ -6,3 +6,4 @@
 #ignora los ficheros que terminan en ~
 *~
 
+*.out
