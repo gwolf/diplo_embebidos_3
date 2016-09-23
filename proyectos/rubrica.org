@@ -9,10 +9,10 @@
 #+latex_header: \usepackage[spanish]{babel}
 
 Para calificar el módulo /Espacio de Usuario/ les pedimos que
-desarrollen, de manera individual o en equipos de dos personas, un
-proyecto que integre los temas que abordamos en estas semanas — Y,
-claro, que vaya alineado con los objetivos generales del diplomado,
-esto es, un enfoque al uso de Linux para el cómputo embebido.
+desarrollen, en equipos de dos o tres personas, un proyecto que
+integre los temas que abordamos en estas semanas — Y, claro, que vaya
+alineado con los objetivos generales del diplomado, esto es, un
+enfoque al uso de Linux para el cómputo embebido.
 
 Como criterio de evaluación, emplearemos la rúbrica que presentamos a
 continuación. Ojo: En caso de no detallarse una de las celdas, los
