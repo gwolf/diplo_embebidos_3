@@ -1,0 +1,11 @@
+Source: calculadora
+Maintainer: Fulano D. Tal <fulano@tal.org>
+Standards-version: 3.9.6.0
+Homepage: http://software.org/calculadora/
+Build-depends: debhelper (>= 8)
+
+Package: calculadora
+Architecture: any
+Description: Una muy útil calculadora multi-operación de línea de comando
+ Esta calculadora me permite obtener el resultado de las cuatro operaciones
+ aritméticas básicas desde la línea de comando.
