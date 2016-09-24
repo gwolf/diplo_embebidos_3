@@ -1,0 +1,1 @@
+SUBSYSTEM=="block", ACTION=="add", ATTRS{serial}=="001CC0EC34BFBBA0E5E60118", ATTRS{idVendor}=="0951", RUN+=/root/scripts/leds1.sh
