@@ -35,8 +35,15 @@ Pasos a seguir:
 		Homepage: https://github.com/gwolf/diplo_embebidos_3/tree/master/practicas/09.09
 		Source: https://github.com/gwolf/diplo_embebidos_3/practicas/09.09/minombre
 
-Ojo: ¿Depende de la existencia de algún otro paquete? Si sí, deben
+**Ojo**: ¿Depende de la existencia de algún otro paquete? Si sí, deben
 agregar el campo `Depends:` indicándolos.
+
+**Ojo**: Este `control` marca `Architecture: all`. Esto indica que el
+paquete construido es *independiente de arquitectura* (probablemente,
+un script de Bash, Perl, Python, Ruby, etc.) Si estás empaquetando un
+programa que requieras compilar, corresponde indicar `Architecture:
+any` — O, si es específico a una arquitectura en particular, el
+identificador de dicha arquitectura.
 
 3. Sugiero que definas como variables en tu `Makefile` la ubicación
    del paquete generado:
