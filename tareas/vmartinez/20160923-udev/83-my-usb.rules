@@ -1,0 +1,9 @@
+# put it /etc/udev/rules.d/
+# The information was taken from
+# * udevadm info -a path -n /dev/sdb1 | less (actually /dev/sdb1 was the id assigned it can change)
+# * udevadm monitor --property
+# NOTE: the path of mDevice.sh, is in hardcode, I tested it on the course computer, so it must be change to another directory.
+# Soon I would like to add a make file.
+# The attributes and information of the device was taken from a personal USB, so it can change
+ACTION=="add", KERNEL=="sd?", ATTRS{idVendor}=="0951", ATTRS{idProduct}=="1642", ATTRS{serial}=="001CC0C60D72BBB0241F0123", RUN+="/home/diplomado5/mDevice.sh 1 %S %p %k "
+ACTION=="remove", ENV{ID_MODEL}=="DT_101_G2", ENV{DEVTYPE}=="disk", RUN+="/home/diplomado5/mDevice.sh 0 %S %p %k "
