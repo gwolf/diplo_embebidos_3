@@ -48,9 +48,9 @@ dedicada a la presentación de proyectos.
 Si tienen cualquier duda respecto a esta tabla, ¡no duden en
 comentárnoslo a la brevedad!
 
-El proyecto de desarrollo valdrá el 60% de la calificación del
-diplomado; el 40% restante provendrá de promediar las tareas,
-prácticas y ejercicios en clase.
+El proyecto de desarrollo valdrá el 60% de la calificación del módulo;
+el 40% restante provendrá de promediar las tareas, prácticas y
+ejercicios en clase.
 
 #+BEGIN_CENTER
 ¡Mucha suerte!
