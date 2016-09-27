@@ -8,7 +8,9 @@ Para calificar el módulo /Arranque del sistema/ vamos a evaluar el
 mismo proyecto que entregarán para /Espacio de Usuario/, pero desde
 ángulos muy diferentes.
 
-El criterio de evaluación para este módulo se describe a continuación.
+El criterio de evaluación para este módulo se describe a continuación;
+ante un sistema que cumpla con el /punto base/, agreguen la cantidad
+de puntos para cada rubro correspondiente a su desarrollo.
 
 La entrega del proyecto será también el /sábado 22 de octubre/.
 
@@ -42,6 +44,11 @@ La entrega del proyecto será también el /sábado 22 de octubre/.
 | Recompilado agregando o eliminando módulos                      |      1 |
 | Compilado desde fuentes de kernel.org                           |      2 |
 |-----------------------------------------------------------------+--------|
+
+Pueden notar que la calificación obtenida podría ser superior a 10;
+esto es para permitir que elijan el conjunto de características que
+mejor vayan con el proyecto que desarrollaron. /La calificación máxima
+es de 10/.
 
 Si tienen cualquier duda respecto a esta tabla, ¡no duden en
 comentárnoslo a la brevedad!
