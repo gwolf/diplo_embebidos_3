@@ -1,0 +1,17 @@
+all: practica_09_09.ipk
+
+
+practica_09_09.ipk:
+	rm -rf ipk
+	mkdir -p ipk/opt/practica_09_09
+	cp *.c ipk/opt/practica_09_09
+	cp *.h ipk/opt/practica_09_09
+	cp makefile ipk/opt/practica_09_09
+	tar czvf control.tar.gz control
+	cd ipk; tar czvf ../data.tar.gz .; cd ..
+	echo 2.0 > debian-binary
+	ar r practica_09_09.ipk control.tar.gz data.tar.gz  debian-binary
+
+clean-ipk:
+	rm -f control.tar.gz data.tar.gz
+
