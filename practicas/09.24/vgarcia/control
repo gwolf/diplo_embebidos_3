@@ -1,0 +1,12 @@
+Package: mi-paquete
+Version: 1.0
+Description: creaciond e mi paquete
+Section: extras
+Priority: optional
+Maintainer: Victor 
+License: CLOSED
+Architecture: all
+OE: mi-paquete-calc
+Homepage: unknown
+Depends: N/A
+Source:  N/A
