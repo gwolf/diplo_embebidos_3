@@ -1,0 +1,5 @@
+# put file on /etc/udev/rules.d
+# device info was consulted using the command: udevadm info -a -p $(udevadm info -q path /dev/sdb)
+# path of mDevice.sh is hardcoded, so it may change to another directory
+# the attributes used may changed depending on the device
+ACTION=="add", ATTRS{idVendor}=="0951", ATTRS{serial}=="60A44C3FACDCBEB189770117", RUN+="/home/sam/Documents/folderSam/deviceScript.sh"	
