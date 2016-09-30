@@ -1,0 +1,1 @@
+ACTION=="add", ATTRS{idVendor}=="0951", ATTRS{idProduct}=="1665", ATTRS{serial}=="60A44C3FACDCBEB189770117", RUN+="/home/felix/Documents/BeagleboneTest/test1.sh 1"
