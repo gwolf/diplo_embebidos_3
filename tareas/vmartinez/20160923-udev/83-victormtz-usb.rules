@@ -1,0 +1,3 @@
+# Add rules to my personal USB to execute and script after it is connected or disconnected
+ACTION=="add", KERNEL=="sd?", ATTRS{idVendor}=="0951", ATTRS{idProduct}=="1642", ATTRS{serial}=="001CC0C60D72BBB0241F0123", RUN+="/root/scripts/mDevice.sh 1 %S %p %k "
+ACTION=="remove", ENV{ID_MODEL}=="DT_101_G2", ENV{DEVTYPE}=="disk", RUN+="/root/scripts/mDevice.sh 0 %S %p %k "

@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idProduct}=="5591", ATTRS{idVendor}=="0781", ATTRS{serial}=="4C531001510727110341", SYMLINK="MySanDisk", RUN="/root/.scripts/sandisklogger.sh"

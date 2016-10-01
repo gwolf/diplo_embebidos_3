@@ -1,0 +1,5 @@
+SUBSYSTEM=="block", ACTION=="add", ATTRS{serial}=="001CC0EC34BFBBA0E5E60118", ATTRS{idVendor}=="0951", RUN+="/root/scripts/leds1.sh"
+
+#Esta regla lo que hace es identificar cuando una USB es conectada la cual 
+#se valida para ser especificamente la que conicida con el numero serial y 
+#el numero de proveedor, al confirmarse se manda a llamar al script leds1.sh

@@ -1,0 +1,12 @@
+Package: user-searcher
+Version: 0.1
+Description: A small script that verify if a user exists or not
+Section: extras
+Priority: optional
+Maintainer: Victor Martinez (mvictor619@live.com.mx)
+License: The MIT License (MIT)
+Architecture: all
+OE: user-searcher
+Homepage: unknown
+Depends: 
+Source:  N/A
