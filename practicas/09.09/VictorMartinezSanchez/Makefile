@@ -3,12 +3,13 @@ GCC = gcc
 CFLAGS = -lpthread
 OBJ = get_max.o get_min.o main.o
 DESTDIR = /usr/local/bin
+BIN = $(DESTDIR)/usr/local/bin
 OUT = prog
 
 all: bin
 
 %.o: %.c
-	$(GCC) -c -o $@ $<
+	$(GCC) $(CFLAGS) -c -o $@ $<
 
 $(OUT): $(OBJ) 
 	$(GCC) $(CFLAGS) $(OBJ) -o $(OUT)
@@ -25,8 +26,8 @@ run: bin
 	./$(OUT)
 
 install: bin
-	[ -d $(DESTDIR) ] || mkdir -p $(DESTDIR)
-	cp ./$(OUT) $(DESTDIR)
+	install -d $(BIN)
+	install ./$(OUT) $(BIN)
 
 uninstall:
-	-rm $(DESTDIR)/$(OUT)
+	-rm $(BIN)/$(OUT)

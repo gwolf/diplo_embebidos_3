@@ -1,0 +1,64 @@
+#+title: Criterio para la evaluación del proyecto final del módulo
+#+author: Gunnar Wolf, Sandino Araico
+#+date: Diplomado de Linux Embebido (Arranque del sistema)
+#+language: es
+#+options: toc:nil
+
+Para calificar el módulo /Arranque del sistema/ vamos a evaluar el
+mismo proyecto que entregarán para /Espacio de Usuario/, pero desde
+ángulos muy diferentes.
+
+El criterio de evaluación para este módulo se describe a continuación;
+ante un sistema que cumpla con el /punto base/, agreguen la cantidad
+de puntos para cada rubro correspondiente a su desarrollo.
+
+La entrega del proyecto será también el /sábado 22 de octubre/.
+
+|-----------------------------------------------------------------+--------|
+| Descripción                                                     | Puntos |
+|-----------------------------------------------------------------+--------|
+| *Punto base*                                                    |        |
+| Sistema que arranque y llegue por sí sólo a un estado funcional |      5 |
+|-----------------------------------------------------------------+--------|
+| *Instalación*                                                   |        |
+| Raspbian /rasurado/                                             |      0 |
+| Distribución estándar de Linux                                  |      1 |
+| Distribución binaria para embebidos (tipo OpenWRT)              |      2 |
+| Sistema construido (tipo Buildroot)                             |      3 |
+| Construido /a pata/                                             |      3 |
+|-----------------------------------------------------------------+--------|
+| *Sistema de inicio*                                             |        |
+| Sistema estándar (Systemd, SysV)                                |      0 |
+| Sistema simplificado (tipo OpenWRT)                             |      1 |
+| Desarrollado a medida                                           |      2 |
+|-----------------------------------------------------------------+--------|
+| *Almacenamiento*                                                |        |
+| Sistema FHS lectura/escritura estándar                          |      0 |
+| Sistema híbrido (SquashFS, OverlayFS)                           |      1 |
+| Sólo lectura                                                    |      2 |
+| Sin almacenamiento montado (vivir en ramdisk)                   |      2 |
+|-----------------------------------------------------------------+--------|
+| *Kernel*                                                        |        |
+| De cajón correspondiente a la instalación                       |      0 |
+| Estándar para plataforma, no de instalación                     |      1 |
+| Recompilado agregando o eliminando módulos                      |      1 |
+| Compilado desde fuentes de kernel.org                           |      2 |
+|-----------------------------------------------------------------+--------|
+
+Pueden notar que la calificación obtenida podría ser superior a 10;
+esto es para permitir que elijan el conjunto de características que
+mejor vayan con el proyecto que desarrollaron. /La calificación máxima
+es de 10/.
+
+Si tienen cualquier duda respecto a esta tabla, ¡no duden en
+comentárnoslo a la brevedad!
+
+El proyecto de desarrollo valdrá el 70% de la calificación del módulo;
+el 30% restante provendrá de promediar las tareas, prácticas y
+ejercicios en clase.
+
+#+BEGIN_CENTER
+¡Mucha suerte!
+
+/– Gunnar Wolf, Sandino Araico/
+#+END_CENTER

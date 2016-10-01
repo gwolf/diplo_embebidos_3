@@ -1,0 +1,12 @@
+Package: Practica_09.09
+Version: 1.0
+Description: Practica_09.09 packaged
+Section: program files
+Priority: normal
+Maintainer: Sam 
+License: CLOSED
+Architecture: all
+OE: some-stuff
+Homepage: unknown
+Depends: 
+Source:  N/A
