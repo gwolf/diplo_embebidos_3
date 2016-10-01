@@ -8,6 +8,8 @@
 
 ### Sistema Buildroot
 
+- [Manual de usuario de Buildroot](https://buildroot.uclibc.org/downloads/manual/manual.html);
+  la sección 17.* habla acerca de cómo agregar paquetes nuevos al árbol
 - [Using Buildroot for real projects](http://elinux.org/images/2/2a/Using-buildroot-real-project.pdf)
 
 ## Arranque del sistema
