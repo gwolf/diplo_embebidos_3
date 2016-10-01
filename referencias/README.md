@@ -2,6 +2,14 @@
 
 ## Linux: Espacio de usuario
 
+### Comunicación entre procesos
+
+- [socat — Handling all kinds of sockets](http://www.dest-unreach.org/socat/doc/linuxwochen2007-socat.pdf)
+
+### Sistema Buildroot
+
+- [Using Buildroot for real projects](http://elinux.org/images/2/2a/Using-buildroot-real-project.pdf)
+
 ## Arranque del sistema
 
 ### Arranque temprano
