@@ -28,7 +28,7 @@ controles, y trabaja con él para instalarlo en el sistema.
 
    Puedes encontrar un ejemplo de estos archivos en la práctica
    realizada en clase por Gunnar,
-   [calculadora.diff](./practicas/10.01/gwolf/20161001-calculadora.diff)
+   [calculadora.diff](./gwolf/20161001-calculadora.diff)
 4. Notifica a los Makefiles de buildroot acerca de tu paquete,
    editando `packages/Config.in`, agregando referencia al `Config.in`
    de tu directorio recién creado. Nuevamente, puedes ver esto en la
