@@ -4,14 +4,14 @@ Para el módulo de *Linux en espacio de usuario*:
 
 | Nombre                        | 20-ago | 27-ago | 9-sep | 10-sep | 23-sep | 24-sep | 1-oct | 8-oct | 15-oct | 22-oct |
 |-------------------------------+--------+--------+-------+--------+--------+--------+-------+-------+--------+--------|
-| Esaú Rojas Ortega             | X      | X      | X     | X      |        |        |       |       |        |        |
-| Félix Agustín Ruiz Mendoza    | X      | X      | X     | X      |        |        |       |       |        |        |
-| Héctor Reyes Escamilla        | X      | X      | X     | X      |        |        |       |       |        |        |
-| Marco Silvano Serrano Ramírez | X      | X      | X     | X      |        |        |       |       |        |        |
-| Mauricio Quijada Jiménez      | X      | X      | X     | X      |        |        |       |       |        |        |
-| Ricardo Balderas Paredes      | X      | X      | X     | X      |        |        |       |       |        |        |
-| Rodrigo Galeana Torres        | X      | X      | X     | X      |        |        |       |       |        |        |
-| Samuel Gandarilla Pérez       | X      | X      |       | X      |        |        |       |       |        |        |
-| Samuel Quiroz Lima            | X      | X      |       | X      |        |        |       |       |        |        |
-| Víctor Hugo García Ortega     | X      | X      | X     | X      |        |        |       |       |        |        |
-| Víctor Martínez Sánchez       | X      | X      | X     | X      |        |        |       |       |        |        |
+| Esaú Rojas Ortega             | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Félix Agustín Ruiz Mendoza    | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Héctor Reyes Escamilla        | X      | X      | X     | X      | X      | X      |       |       |        |        |
+| Marco Silvano Serrano Ramírez | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Mauricio Quijada Jiménez      | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Ricardo Balderas Paredes      | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Rodrigo Galeana Torres        | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Samuel Gandarilla Pérez       | X      | X      |       | X      | X      | X      | X     |       |        |        |
+| Samuel Quiroz Lima            | X      | X      |       | X      | X      | X      |       |       |        |        |
+| Víctor Hugo García Ortega     | X      | X      | X     | X      | X      | X      | X     |       |        |        |
+| Víctor Martínez Sánchez       | X      | X      | X     | X      | X      | X      | X     |       |        |        |
