@@ -1,5 +1,0 @@
-# udev rule to detect a given USB drive
-# Working rule
-# getting the parameters:
-# udevadm info -a path -n /dev/sdb1 | less
-ACTION=="add", ATTRS{idVendor}=="0951", ATTRS{idProduct}=="1665", ATTRS{serial}=="60A44C3FACDCBEB189770117", RUN+="/home/diplomado5/leds.sh 1"
