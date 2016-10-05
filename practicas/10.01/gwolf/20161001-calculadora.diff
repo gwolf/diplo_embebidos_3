@@ -1,0 +1,48 @@
+diff --git a/package/Config.in b/package/Config.in
+index fe3ac2c..719383f 100644
+--- a/package/Config.in
++++ b/package/Config.in
+@@ -66,6 +66,7 @@ menu "Compressors and decompressors"
+ endmenu
+ 
+ menu "Debugging, profiling and benchmark"
++	source "package/calculadora/Config.in"
+ 	source "package/blktrace/Config.in"
+ 	source "package/bonnie/Config.in"
+ 	source "package/cache-calibrator/Config.in"
+diff --git a/package/calculadora/Config.in b/package/calculadora/Config.in
+new file mode 100644
+index 0000000..ea47e2d
+--- /dev/null
++++ b/package/calculadora/Config.in
+@@ -0,0 +1,4 @@
++config BR2_PACKAGE_CALCULADORA
++	bool "calculadora"
++	help
++	  Paquetito de pruebas que debe ora sí funcionar :-P
+diff --git a/package/calculadora/calculadora.mk b/package/calculadora/calculadora.mk
+new file mode 100644
+index 0000000..c06abb9
+--- /dev/null
++++ b/package/calculadora/calculadora.mk
+@@ -0,0 +1,20 @@
++################################################################################
++#
++# calculadora
++#
++################################################################################
++
++CALCULADORA_VERSION = 1.0
++CALCULADORA_SOURCE = calculadora_$(CALCULADORA_VERSION).orig.tar.gz
++CALCULADORA_SITE = https://data.gwolf.org
++CALCULADORA_LICENSE = WTFPL
++
++define CALCULADORA_BUILD_CMDS
++	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) all
++endef
++
++define CALCULADORA_INSTALL_TARGET_CMDS
++	$(INSTALL) -D -m 0755 $(@D)/calculadora $(TARGET_DIR)/usr/bin/calculadora
++endef
++
++$(eval $(generic-package))
