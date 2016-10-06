@@ -1,1 +1,1 @@
-SUBSYSTEM=="block", ACTION=="add", ATTRS{idVendor}=="0480", ATTRS{manufacturer}=="TOSHIBA" ATTRS{serial}=="231845094B2E", RUN+="cd home/ezz/device.sh"
+SUBSYSTEM=="block", ACTION=="add", ATTRS{idVendor}=="0480", ATTRS{manufacturer}=="TOSHIBA" ATTRS{serial}=="231845094B2E", RUN+="/home/ezz/device.sh"
