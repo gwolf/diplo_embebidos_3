@@ -1,0 +1,9 @@
+SUBSYSTEM=="block", ACTION=="add", ATTRS{serial}=="001CC0EC34BFBBA0E5E60118", ATTRS{idVendor}=="0951", RUN+="/root/scrips/leds1.sh"
+
+###SUBSYSTEM.- Define el subsistema del dispositivo
+###ACTION.- Variable para detectar si un dispositivo esta siendo conectado o desconectado
+###ATTRS.- Define un atributo de sysfs dispositivo, en este caso, "serial" y "idVendor"
+###RUN.- Corre un programa particular cuando el dispositivo es conectado
+
+###Esau Rojas Ortega 
+###Equipo no.1
