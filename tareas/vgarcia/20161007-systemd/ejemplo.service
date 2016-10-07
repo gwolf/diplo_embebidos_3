@@ -1,0 +1,13 @@
+[Unit]
+Description = Ejemplo de demonio con sistemd
+After		= syslog.target
+
+[Service]
+Type		= forking
+PIDFile		= /run/demonio.pid
+ExecStart	= /usr/bin/mi_demonio start
+ExecStop	= /usr/bin/mi_demonio stop
+ExecReload	= kill -TERM `cat /run/demonio.pid`
+
+[Install]
+WantedBy	= multi-user.target
