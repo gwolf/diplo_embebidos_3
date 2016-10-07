@@ -1,0 +1,11 @@
+[Unit]
+Description=Example of systemd service file
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/daemon
+User=root
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multiuser.agent
