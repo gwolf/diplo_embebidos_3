@@ -1,0 +1,14 @@
+# ESTA REGLA PERMITE DETECTAR CUANDO UNA MEMORIA USB ES CONECTADA A LA TARJETA 
+# BEAGLEBONE Y EJECUTA UN SCRIPT QUE ENCIENDE LOS LEDS
+# PARA CREAR ESTA REGLA SEGUIMOS LOS SIGUIENTES PASOS:
+#	1.OBTENEMOS LA INFORMACION DE LA MEMORIA USB CON EL COMANDO: 
+#		udevadm info -a -p $(udevadm info -q path /dev/sdb/)
+#	2.Obtenemos informacion de la USB como idVendor y serial
+#	3.Creamos la regla indicando que: 
+#		Accion es cuando la USB se inserta
+#		Subsistema es de bloque,
+#		Serial e idVendor corresponden a los de la USB
+#		Se ejecuta el script
+
+ACTION=="add", SUBSYSTEM=="block", ATTRS{serial}=="001CC0EC34BFBBA0E5E60118", ATTRS{idVendor}=="0951", RUN+="/root/scripts/leds1.sh"
+
