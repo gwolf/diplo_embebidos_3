@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MIPAQUETE
+	bool "mipaquete"
+	help
+	  Mi paquete en buildroot.
