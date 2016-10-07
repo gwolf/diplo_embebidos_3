@@ -1,0 +1,49 @@
+diff --git a/package/Config.in b/package/Config.in
+index ef82b2e..4d8a3aa 100644
+--- a/package/Config.in
++++ b/package/Config.in
+@@ -4,6 +4,7 @@ menu "Target packages"
+ 	source "package/skeleton/Config.in"
+ 
+ menu "Audio and video applications"
++	source "package/minmax/Config.in"
+ 	source "package/alsa-utils/Config.in"
+ 	source "package/aumix/Config.in"
+ 	source "package/bellagio/Config.in"
+diff --git a/package/minmax/Config.in b/package/minmax/Config.in
+new file mode 100644
+index 0000000..f1c38cf
+--- /dev/null
++++ b/package/minmax/Config.in
+@@ -0,0 +1,4 @@
++config BR2_PACKAGE_MINMAX
++	bool "minmax"
++	help
++	  Paquete de prueba para mostrar la instalacion de mi paquete
+diff --git a/package/minmax/minmax.mk b/package/minmax/minmax.mk
+new file mode 100644
+index 0000000..b20843e
+--- /dev/null
++++ b/package/minmax/minmax.mk
+@@ -0,0 +1,21 @@
++################################################################################
++#
++# Victor Martinez Sanchez
++# Min Max
++#
++################################################################################
++
++MINMAX_VERSION = 1.0
++MINMAX_SOURCE = minmax_$(MINMAX_VERSION).orig.tar.gz
++MINMAX_SITE = https://github.com/MASVictor/diplo_embebidos_3/raw/10.01-buildroot-package/practicas/10.01/VictorMartinezSanchez
++MINMAX_LICENSE = WTFPL
++
++define MINMAX_BUILD_CMDS
++	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) all
++endef
++
++define MINMAX_INSTALL_TARGET_CMDS
++	$(INSTALL) -D -m 0755 $(@D)/prog $(TARGET_DIR)/usr/bin/minmax
++endef
++
++$(eval $(generic-package))
