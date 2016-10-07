@@ -123,6 +123,13 @@
 - [Inicio del sistema](./doc/proceso_arranque_kernel.pdf): Seguimiento
   comentado de los mensajes a bitácora que presenta el núcleo de Linux
   al arrancar
+- [ARM en QEMU](https://people.debian.org/~aurel32/qemu/armel/): Si no
+  tienen una ARM a la mano, pueden emularlo en su x86 usando
+  `qemu`. Esta página tiene (muy) breves instrucciones e imágenes
+  listas para hacerlo.
+- [System emulation using QEMU](https://gmplib.org/~tege/qemu.html):
+  Más información acerca del uso de QEMU como emulador; incluye
+  imágenes de arranque con Linux para distintas arquitecturas.
 
 #### Ramdisk de inicio
 
