@@ -9,6 +9,7 @@
   Un texto que presenta claramente ilustrado con código y diagramas
   los muchos aspectos de la programación multihilos con `pthreads`.
 - [Programación en shel (bash / Bourne)](./doc/tut_shell.pdf)
+- [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html)
 
 ### Gestión de dispositivos
 - [Writing udev rules](http://reactivated.net/writing_udev_rules.html)
