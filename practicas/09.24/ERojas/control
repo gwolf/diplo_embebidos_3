@@ -1,0 +1,11 @@
+Package: mipaquete
+Version: 0.1.0
+Description: Paquete de ejemplo para DipSE
+Section: extras
+Priority: optional
+Maintainer: Ezzz <e_rojas@live.com>
+License: GPL3+
+Architecture: all
+OE: mi-paquete-calc
+Homepage: https://github.com/Ezzzzzzzzzzzzzz/diplo_embebidos_3.git
+Source: https://github.com/Ezzzzzzzzzzzzzz/diplo_embebidos_3/tree/master/practicas/09.09/EsauR_Makefile
