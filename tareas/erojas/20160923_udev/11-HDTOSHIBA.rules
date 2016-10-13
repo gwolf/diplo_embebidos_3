@@ -1,0 +1,1 @@
+SUBSYSTEM=="block", ACTION=="add", ATTRS{idVendor}=="0480", ATTRS{manufacturer}=="TOSHIBA" ATTRS{serial}=="231845094B2E", RUN+="/etc/udev/rules.d"
