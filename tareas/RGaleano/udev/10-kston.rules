@@ -1,0 +1,2 @@
+ACTION== "add", ATTRS{serial}=="001D7D06CF09BFA1F92DAC07", SYMLINK+="usbmarco", 
+RUN+="/root/scripts/leds.sh"  OPTIONS+="last_rule"
