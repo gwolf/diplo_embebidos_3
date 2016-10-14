@@ -1,0 +1,11 @@
+Package: ejemplo_alu
+Version: 0.1.0
+Description: Un pequeño ejemplo de un simulador de ALU
+Depends: build-essential, libc
+Section: extras
+Priority: optional
+Maintainer: Ricardo Balderas <balderas_ricardo@hotmail.com>
+Licence: GPL3+
+Architecture: any
+Homepage: https://github.com/RicardoBalderas/diplo_embebidos_3/
+Source: https://github.com/RicardoBalderas/diplo_embebidos_3/tree/master/practicas/09.09
