@@ -109,7 +109,7 @@
 - Video de Martin Michlmayr en DebConf16:
   [Debian on ARM devices, subtitulado en amara.org](http://www.amara.org/en/videos/ITAyeVQIwOPr/info/debian_on_arm_devices_2webm/?tab=video);
   [únicamente video](http://meetings-archive.debian.net/pub/debian-meetings/2016/debconf16/Debian_on_ARM_devices_2.webm)
-  [The many methods of building a Debian image](http://people.linaro.org/~riku.voipio/debian-images/#/):
+- [The many methods of building a Debian image](http://people.linaro.org/~riku.voipio/debian-images/#/):
   Comentamos en clase la importancia de confiar en lo que tenemos
   instalado en nuestro entorno embebido, y en las alternativas que hay
   a descargar un archivo ya instalado. En esta ponencia (presentada en
