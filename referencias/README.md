@@ -117,6 +117,9 @@
   imágenes de sistema operativo. Principalmente orientado a
   proveedores de infraestructura (*la nube*), pero perfectamente
   aplicable a nuestro tema de interés.
+- [Inicio del sistema](./doc/inicio_del_sistema.pdf), presentación que
+  explica los mensajes de carga temprana del sistema Linux, tal cual
+  aparecen en la bitácora.
 - [How Linux boots](http://troubleshooters.com/linux/diy/howboot.htm),
   de Steve Litt, 2015. Descripción detallada y actualizada del proceso
   de arranque en Linux. Un poco centrado en x86, pero un buen
