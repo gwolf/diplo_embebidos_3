@@ -7,3 +7,8 @@ PiGuardian
 ¡Sal de tu casa sin procupaciones! **PiGuardian** te avisará si algún intruso intenta ingresar a tu hogar.
 
 ------
+
+##Integrantes
+
+>- GALEANO TORRES RODRIGO
+>- SERRANO RÁMIREZ MARCO
