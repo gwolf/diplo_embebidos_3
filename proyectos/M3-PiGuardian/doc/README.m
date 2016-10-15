@@ -44,4 +44,4 @@ Funcionamiento
 **PiGuardian** tiene como entradas la salida del sensor PIR. Si la entrada es *false*, la rp3 (Raspberry Pi 3) entenderá que no hay intrusión; mientras que una salida *true* del sensor, la rp3 alertará al usuario con un email, indicando que hubo una intrusión. El envio del correo se realizará mediante un script en python.
 
 El siguiente diagrama ilustra el funcionamiento descrito:
-<IMG src=https://github.com/galeanounam/diplo_embebidos_3/blob/proy1/proyectos/RGaleano/doc/diagrama_bloques.jpeg />
+<IMG src=https://github.com/galeanounam/diplo_embebidos_3/blob/proy1/proyectos/M3-PiGuardian/doc/diagrama_bloques.jpeg />
