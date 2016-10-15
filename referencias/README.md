@@ -50,6 +50,14 @@
   Technology Devices), sistemas de archivos estructurados en bitácora,
   y servicios conexos
 
+### Contenedores, *namespaces* y *cgroups*
+- [Notes from a container](https://lwn.net/Articles/256389/), artículo
+  de Jonathan Corbet de 2007 que explica el concepto de *CGroups* y de
+  *Namespaces*, y de cómo entre ambos implementan la infraestructura
+  de contenedores. Ha habido un muy fuerte avance desde hace nueve
+  años, pero el fundamento de los *Linux Containers* (`lxc`) es el
+  mismo.
+
 ## Arranque del sistema
 
 ### Arranque temprano
