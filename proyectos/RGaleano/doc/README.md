@@ -14,6 +14,7 @@ Descripción
 > - Raspberry Pi 3
 > - Sensor de movimiento PIR HC-SR501
 > - 2 Leds (1 rojo y 1 verde)
+
 #### Raspberry Pi 3
 
 Es la unidad central del sistema embebido. Recibirá y manejará la entrada del sensor PIR para producir las salidas correspondientes de acuerdo al programa.
