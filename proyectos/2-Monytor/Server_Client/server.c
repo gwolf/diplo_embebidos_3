@@ -76,7 +76,26 @@ void *_checkSensor(void *param) {
 
 	printf("En el thread -- %s\n", (char *)param_thread->msn);
 
-	sleep(2);
+	int aux;
+	char buffer[64];
+	char limit_ = 10;
+
+	while(1) {
+		aux = recv(param_thread->socket_, buffer, sizeof(buffer), 0);
+		if(aux==-1) {
+			sleep(1);
+			continue;
+		}
+
+		else if(aux==0) {
+			if(limit_--)
+				continue;
+			break;
+		}
+		buffer[aux] = 0x00;
+		printf("[+] (%d) - %s\n", param_thread->thread_id, buffer);
+	}
+
 
 	printf(" -- Thread terminado -- %s\n", (char *)param_thread->msn);
 	setValue_thread(param_thread->thread_id, 0);
