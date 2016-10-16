@@ -1,14 +1,7 @@
 
 #include "monyt_manage_threads.h"
 
-/**
- * @brief Function to manage the static variable thread counter
- * @param The action to be done
- * @param The number of the thread, must be between 0 and LIMIT_CONNECTIONS
- * @param In case of a SET action this is the value to be set
- * @param In case of a GET action this is the value returned
- * @return 1 if success, 0 otherwise
- */
+/** Function to manage the static variable thread counter */
 static int thread_counter(Thread_action i_action, uint i_thread, char i_value, char *o_value)
 {
 	static char l_threads[LIMIT_CONNECTIONS];
@@ -36,38 +29,22 @@ static int thread_counter(Thread_action i_action, uint i_thread, char i_value, c
 	return 0;
 }
 
-/**
- * @brief Initialize the threads counter
- * @return 1 if success, 0 otherwise
- */
+/** Initialize the threads counter */
 int init_thread_counter() {
 	return thread_counter(Thread_INIT, 0, 0, NULL);
 }
 
-/**
- * @brief Get the value of a given thread
- * @param the number of the thread
- * @param the value of the thread
- * @return 1 if success, 0 otherwise
- */
+/** Get the value of a given thread */
 char getValue_thread(uint thread, char *i_value) {
 	return thread_counter(Thread_GET, thread, 0, i_value);
 }
 
-/**
- * @brief Set the value of a given thread
- * @param the number of the thread
- * @return 1 if success, 0 otherwise
- */
+/** Set the value of a given thread */
 int setValue_thread(uint thread, char value) {
 	return thread_counter(Thread_SET, thread, value, NULL);
 }
 
-/**
- * @brief Set the value of a given thread
- * @param the thread available
- * @return the thread value
- */
+/** Search an available thread */
 char getAvailable_thread(uint *thread) {
 	uint i = LIMIT_CONNECTIONS;
 	char l_value;

@@ -40,9 +40,9 @@ char getValue_thread(uint thread, char *i_value);
 int setValue_thread(uint thread, char value);
 
 /**
- * @brief Set the value of a given thread
+ * @brief Search an available thread
  * @param the thread available
- * @return the thread value
+ * @return 1 if success, 0 otherwise
  */
 char getAvailable_thread(uint *thread);
 
