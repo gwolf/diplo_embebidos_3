@@ -1,7 +1,7 @@
 
 GCC = gcc
-CFLAGS = -lpthread
-OBJ_SERVER = monyt_socket.o server.o
+CFLAGS = -Wall -lpthread
+OBJ_SERVER = monyt_socket.o monyt_manage_threads.o server.o
 OBJ_CLIENT = monyt_socket.o client.o
 SERVER = server
 CLIENT = client
