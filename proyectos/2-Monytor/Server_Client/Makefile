@@ -2,7 +2,7 @@
 GCC = gcc
 CFLAGS = -Wall -lpthread
 OBJ_SERVER = monyt_socket.o monyt_manage_threads.o server.o
-OBJ_CLIENT = monyt_socket.o client.o
+OBJ_CLIENT = monyt_socket.o sensor_exec.o
 SERVER = server
 CLIENT = client
 
@@ -30,3 +30,6 @@ run_server: $(SERVER)
 
 run_client: $(CLIENT)
 	./$(CLIENT)
+
+run_client_test: $(CLIENT)
+	./$(CLIENT) ./test.sh
