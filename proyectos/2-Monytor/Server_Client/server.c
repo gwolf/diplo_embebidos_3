@@ -5,21 +5,13 @@
 
 #include <pthread.h>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-
-#define LIMIT_CONNECTIONS 10
-#define SOCKET_PATH "/tmp/project_socket"
+#include "monyt_socket.h"
 
 typedef struct __parameters_thread_main {
 	char *thread_id;
 	int socket_;
 	char msn[32];
 }thread_parameters;
-
-char server_init(int *socket_, struct sockaddr_un *local);
-int server_accept(int socket_, struct sockaddr_un *remote);
 
 char getValue_thread(char *thread);
 void setValue_thread(char *thread, char value);
@@ -31,7 +23,7 @@ void *_checkSensor(void *param);
 int main(int argc, char **argv)
 {
 	int socket_, s_accepted, _thread_aux;
-	struct sockaddr_un local, remote;
+	struct sockaddr_un remote;
 	int len_r;
 	char cont_threads[LIMIT_CONNECTIONS];
 	pthread_t _threads[LIMIT_CONNECTIONS];
@@ -39,7 +31,7 @@ int main(int argc, char **argv)
 	char aux_threads;
 
 
-	if(!server_init(&socket_, &local)) {
+	if(!(socket_ = server_init())) {
 		printf("Error, Cannot initialize socket\n");
 		return EXIT_FAILURE;
 	}
@@ -51,6 +43,7 @@ int main(int argc, char **argv)
 		printf("Waiting connections...\n");
 		if((s_accepted = server_accept(socket_, &remote))==0) {
 			printf("Error, accept function");
+			continue;
 		}
 		
 		aux_threads = getAvailable_thread(cont_threads);
@@ -79,41 +72,6 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
-
-
-/** Initialize socket for server mode */
-/* return 1 if success, otherwise 0 */
-char server_init(int *socket_, struct sockaddr_un *local)
-{
-	/* create nonblocking socket */
-	if((*socket_ = socket(AF_UNIX, SOCK_STREAM, 0))==-1)
-		return 0;
-
-	local->sun_family = AF_UNIX;
-	strcpy(local->sun_path, SOCKET_PATH);
-	unlink(local->sun_path);
-
-	if(bind(*socket_, (struct sockaddr *)local, strlen(local->sun_path) + sizeof(local->sun_family)))
-		return 0;
-
-	if(listen(*socket_, LIMIT_CONNECTIONS) == -1)
-		return 0;
-	return 1;
-}
-
-
-/** Accept connection */
-/* return the file descriptor of the socket if success, otherwise 0 */
-int server_accept(int socket_, struct sockaddr_un *remote)
-{
-	int len_r = sizeof(remote);
-	int s_accepted;
-
-	if((s_accepted = accept(socket_, (struct sockaddr *)remote, &len_r))==-1)
-		return 0;
-	return s_accepted;
-}
-
 
 /* functions for managing the threads */
 char getValue_thread(char *thread) {
