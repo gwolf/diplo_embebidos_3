@@ -32,4 +32,4 @@ run_client: $(CLIENT)
 	./$(CLIENT)
 
 run_client_test: $(CLIENT)
-	./$(CLIENT) ./test.sh
+	./$(CLIENT) '##ANALOG-' ./test.sh

@@ -8,20 +8,22 @@
 
 #include "monyt_socket.h"
 
-#define TEMPERATURE_FLAG "##TEMP-\0"
 #define N_ATTEMPTS 10
 #define MSG_LEN 64
 
-int notifyModule(int socket_, char *module);
+int notifyModule(int socket, char *module);
 
 
 int main(int argc, char **argv) {
 	pid_t p_sensor;
 	int pipe_fd[2];
 
+	printf("%d\n", argc);
+
 	/** validate the input */
-	if(argc < 2) {
+	if(argc < 3) {
 		printf("Usage: %s sensor_program\n", argv[0]);
+		printf("Example: %s ##TEMP- temperature_reader.sh\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
@@ -78,7 +80,7 @@ int main(int argc, char **argv) {
 
 		printf("[+] Connection successful\n");
 		while(1) {
-			if(notifyModule(socket, TEMPERATURE_FLAG))
+			if(notifyModule(socket, argv[1]))
 				break;
 			sleep(1);
 		}
@@ -103,7 +105,7 @@ int main(int argc, char **argv) {
 		}
 	}
 	else { /** Here the sensor program is executed */
-		char *v[] = {argv[1], (char *)0};
+		char *v[] = {argv[2], (char *)0};
 
 		/* close the input descriptor of the pipe */
 		close(pipe_fd[0]);
@@ -111,9 +113,8 @@ int main(int argc, char **argv) {
 		/* change the standar output, now is the pipe descriptor */
 		dup2(pipe_fd[1], 1);
 
-		printf("Son -> My pid: %d\n", getpid());
-
-		if(execvp(argv[1], v)) {
+		sleep(2);
+		if(execvp(argv[2], v)) {
 			perror("Error, execl call ");
 			return -1;
 		}
@@ -124,10 +125,10 @@ int main(int argc, char **argv) {
 	return EXIT_SUCCESS;
 }
 
-int notifyModule(int socket_, char *module) {
+int notifyModule(int socket, char *module) {
 	int aux;
 
-	aux = send(socket_, module, strlen(module), MSG_NOSIGNAL);
+	aux = send(socket, module, strlen(module), MSG_NOSIGNAL);
 	if(!aux || aux==-1)
 		return 0;
 	return aux;
