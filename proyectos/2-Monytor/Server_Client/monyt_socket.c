@@ -3,10 +3,10 @@
 #include "monyt_socket.h"
 
 /** Initialize the socket in server mode */
-int server_init()
+static int server_init(char *socket_path)
 {
 	int l_socket;
-       struct sockaddr_un l_addr;
+	struct sockaddr_un l_addr;
 
 	/* create nonblocking socket */
 	if((l_socket = socket(AF_UNIX, SOCK_STREAM, 0))==-1)
@@ -14,7 +14,7 @@ int server_init()
 
 	/* fill address structure */
 	l_addr.sun_family = AF_UNIX;
-	strcpy(l_addr.sun_path, SOCKET_PATH);
+	strcpy(l_addr.sun_path, socket_path);
 	unlink(l_addr.sun_path);
 
 	/* bind and write listen limit */
@@ -24,6 +24,18 @@ int server_init()
 	if(listen(l_socket, LIMIT_CONNECTIONS) == -1)
 		return 0;
 	return l_socket;
+}
+
+/** Initialize the socket in server mode */
+int sensor_server_init()
+{
+	return server_init(SENSOR_PATH);
+}
+
+/** Initialize the socket in server mode */
+int notify_server_init()
+{
+	return server_init(NOTIFY_PATH);
 }
 
 
@@ -53,13 +65,27 @@ int client_init()
 }
 
 /** Connect to the server */
-char client_connect(int i_socket)
+char sensor_server_connect(int i_socket)
 {
 	struct sockaddr_un l_addr;
 
 	/* Fill the address structure */
 	l_addr.sun_family = AF_UNIX;
-	strcpy(l_addr.sun_path, SOCKET_PATH);
+	strcpy(l_addr.sun_path, SENSOR_PATH);
+
+	if(connect(i_socket, (struct sockaddr *)&l_addr, strlen(l_addr.sun_path) + sizeof(l_addr.sun_family)))
+		return 0;
+	return 1;
+}
+
+/** Connect to the server */
+char notify_server_connect(int i_socket)
+{
+	struct sockaddr_un l_addr;
+
+	/* Fill the address structure */
+	l_addr.sun_family = AF_UNIX;
+	strcpy(l_addr.sun_path, NOTIFY_PATH);
 
 	if(connect(i_socket, (struct sockaddr *)&l_addr, strlen(l_addr.sun_path) + sizeof(l_addr.sun_family)))
 		return 0;

@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 		/* wait until connect to the server */
 		printf("[+] Waiting until connect to the server\n");
 		while(n_limit--) {
-			if(client_connect(socket))
+			if(sensor_server_connect(socket))
 				break;
 			sleep(1);
 		}

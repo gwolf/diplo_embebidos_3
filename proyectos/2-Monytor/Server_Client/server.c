@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 	uint n_thread;
 
 
-	if(!(socket = server_init())) {
+	if(!(socket = sensor_server_init())) {
 		printf("Error, Cannot initialize socket\n");
 		return EXIT_FAILURE;
 	}
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	memset(param_thread, 0, sizeof(thread_parameters)*LIMIT_CONNECTIONS);
 
-	while(1) {
+	for(;;) {
 		printf("Waiting connections...\n");
 		if((s_accepted = server_accept(socket, &remote))==0) {
 			printf("Error, accept function");
