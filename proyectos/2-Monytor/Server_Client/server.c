@@ -111,6 +111,7 @@ void poll_notifier(int socket, thread_parameters *param_thread) {
 	char buffer[64];
 	char limit = 10, value = 0;
 
+	printf(" -- Pool notifier iniciado -- \n");
 	for(;;) {
 
 		for (i = 0; i < LIMIT_CONNECTIONS; i++) {
@@ -120,17 +121,22 @@ void poll_notifier(int socket, thread_parameters *param_thread) {
 			if(!value)
 				continue;
 
-			sent_b = send(socket, param_thread[i].msg, strlen(param_thread[i].msg), MSG_NOSIGNAL);
+			sprintf(buffer, "%s :: %s\0", param_thread[i].header, param_thread[i].msg);
+			sent_b = send(socket, buffer, strlen(buffer), MSG_NOSIGNAL);
 			if(sent_b == -1 || !sent_b) {
 				if(limit--)
 					continue;
-				break;
+				printf(" -- Pool notifier terminado -- \n");
+				return;
 			}
 			else {
 				limit = 10;
 			}
 
 		}
+
+		if(limit==10)
+			sleep(3);
 	}
 }
 
