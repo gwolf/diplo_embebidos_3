@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #include "monyt_socket.h"
 #include "monyt_manage_threads.h"
 
@@ -14,6 +13,8 @@ typedef struct __parameters_thread_main {
 	char msg[32];
 }thread_parameters;
 
+void *notifierServer(void *param);
+void poll_notifier(int socket, thread_parameters *param_thread);
 void *checkSensor(void *param);
 void poll_sensor(void *param);
 
@@ -22,25 +23,33 @@ int main(int argc, char **argv)
 {
 	int socket, s_accepted, r_thread;
 	struct sockaddr_un remote;
-	pthread_t threads_ids[LIMIT_CONNECTIONS];
+	pthread_t notifier_thread, threads_ids[LIMIT_CONNECTIONS];
 	thread_parameters param_thread[LIMIT_CONNECTIONS];
 	uint n_thread;
 
-
-	if(!(socket = sensor_server_init())) {
-		printf("Error, Cannot initialize socket\n");
+	/* Initialize thread counter */
+	if(!init_thread_counter()) {
+		printf("Error, Cannot initialize thread counter\n");
 		return EXIT_FAILURE;
 	}
 
-	if(!init_thread_counter()) {
-		printf("Error, Cannot initialize thread counter\n");
+	/* Create thread for notifier modules */
+	r_thread = pthread_create(&notifier_thread, NULL, notifierServer, (void *)param_thread);
+	if(r_thread) {
+		printf("Error, pthread_create function\n");
+		return EXIT_FAILURE;
+	}
+
+	/** HERE initialize sensor server mode */
+	if(!(socket = sensor_server_init())) {
+		printf("Error, Cannot initialize sensor socket\n");
 		return EXIT_FAILURE;
 	}
 
 	memset(param_thread, 0, sizeof(thread_parameters)*LIMIT_CONNECTIONS);
 
 	for(;;) {
-		printf("Waiting connections...\n");
+		printf("[+] Sender Waiting connections...\n");
 		if((s_accepted = server_accept(socket, &remote))==0) {
 			printf("Error, accept function");
 			continue;
@@ -72,6 +81,58 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;
 }
 
+
+void *notifierServer(void *param) {
+	thread_parameters *param_thread = (thread_parameters *)param;
+	int socket, s_accepted;
+	struct sockaddr_un remote;
+
+	/** HERE initialize notifier server mode */
+	if(!(socket = notifier_server_init())) {
+		printf("Error, Cannot initialize notifier socket\n");
+		return NULL;
+	}
+
+	for(;;) {
+		printf("[+] Notifier -- Waiting connections...\n");
+		if((s_accepted = server_accept(socket, &remote))==0) {
+			printf("Error, accept function");
+			continue;
+		}
+
+		poll_notifier(s_accepted, param_thread);
+
+	}
+}
+
+void poll_notifier(int socket, thread_parameters *param_thread) {
+
+	int sent_b, i;
+	char buffer[64];
+	char limit = 10, value = 0;
+
+	for(;;) {
+
+		for (i = 0; i < LIMIT_CONNECTIONS; i++) {
+
+			getValue_thread(param_thread[i].thread_id, &value);
+
+			if(!value)
+				continue;
+
+			sent_b = send(socket, param_thread[i].msg, strlen(param_thread[i].msg), MSG_NOSIGNAL);
+			if(sent_b == -1 || !sent_b) {
+				if(limit--)
+					continue;
+				break;
+			}
+			else {
+				limit = 10;
+			}
+
+		}
+	}
+}
 
 void *checkSensor(void *param) {
 
