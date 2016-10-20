@@ -33,9 +33,9 @@ int sensor_server_init()
 }
 
 /** Initialize the socket in server mode */
-int notify_server_init()
+int notifier_server_init()
 {
-	return server_init(NOTIFY_PATH);
+	return server_init(NOTIFIER_PATH);
 }
 
 
@@ -79,13 +79,13 @@ char sensor_server_connect(int i_socket)
 }
 
 /** Connect to the server */
-char notify_server_connect(int i_socket)
+char notifier_server_connect(int i_socket)
 {
 	struct sockaddr_un l_addr;
 
 	/* Fill the address structure */
 	l_addr.sun_family = AF_UNIX;
-	strcpy(l_addr.sun_path, NOTIFY_PATH);
+	strcpy(l_addr.sun_path, NOTIFIER_PATH);
 
 	if(connect(i_socket, (struct sockaddr *)&l_addr, strlen(l_addr.sun_path) + sizeof(l_addr.sun_family)))
 		return 0;

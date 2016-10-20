@@ -11,7 +11,7 @@
 #define LIMIT_CONNECTIONS 10
 /** Path where the unix socket lives */
 #define SENSOR_PATH "/tmp/monyt_sensor.sock"
-#define NOTIFY_PATH "/tmp/monyt_notify.sock"
+#define NOTIFIER_PATH "/tmp/monyt_notify.sock"
 
 /**
  * @brief Initialize the socket in server mode (for sensor manage)
@@ -24,7 +24,7 @@ int sensor_server_init();
  * @brief Initialize the socket in server mode (for sensors notified manage)
  * @return socket descriptor if success, 0 otherwise
  */
-int notify_server_init();
+int notifier_server_init();
 
 
 /**
@@ -56,6 +56,6 @@ char sensor_server_connect(int i_socket);
  * @param socket descriptor
  * @return 1 if success, 0 otherwise
  */
-char notify_server_connect(int i_socket);
+char notifier_server_connect(int i_socket);
 
 #endif /* _MONYT_SOCKET_ */
