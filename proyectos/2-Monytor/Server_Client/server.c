@@ -3,150 +3,210 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <pthread.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-
-#define LIMIT_CONNECTIONS 10
-#define SOCKET_PATH "/tmp/project_socket"
+#include "monyt_socket.h"
+#include "monyt_manage_threads.h"
 
 typedef struct __parameters_thread_main {
-	char *thread_id;
-	int socket_;
-	char msn[32];
+	uint thread_id;
+	int socket;
+	char header[16];
+	char msg[32];
 }thread_parameters;
 
-char server_init(int *socket_, struct sockaddr_un *local);
-int server_accept(int socket_, struct sockaddr_un *remote);
-
-char getValue_thread(char *thread);
-void setValue_thread(char *thread, char value);
-char getAvailable_thread(char *threads);
-
-void *_checkSensor(void *param);
+void *notifierServer(void *param);
+void poll_notifier(int socket, thread_parameters *param_thread);
+void *checkSensor(void *param);
+void poll_sensor(void *param);
 
 
 int main(int argc, char **argv)
 {
-	int socket_, s_accepted, _thread_aux;
-	struct sockaddr_un local, remote;
-	int len_r;
-	char cont_threads[LIMIT_CONNECTIONS];
-	pthread_t _threads[LIMIT_CONNECTIONS];
+	int socket, s_accepted, r_thread;
+	struct sockaddr_un remote;
+	pthread_t notifier_thread, threads_ids[LIMIT_CONNECTIONS];
 	thread_parameters param_thread[LIMIT_CONNECTIONS];
-	char aux_threads;
+	uint n_thread;
 
-
-	if(!server_init(&socket_, &local)) {
-		printf("Error, Cannot initialize socket\n");
+	/* Initialize thread counter */
+	if(!init_thread_counter()) {
+		printf("Error, Cannot initialize thread counter\n");
 		return EXIT_FAILURE;
 	}
 
-	/* clean threads counter */
-	memset(cont_threads, 0, sizeof(char)*LIMIT_CONNECTIONS);
+	/* Create thread for notifier modules */
+	r_thread = pthread_create(&notifier_thread, NULL, notifierServer, (void *)param_thread);
+	if(r_thread) {
+		printf("Error, pthread_create function\n");
+		return EXIT_FAILURE;
+	}
 
-	while(1) {
-		printf("Waiting connections...\n");
-		if((s_accepted = server_accept(socket_, &remote))==0) {
+	/** HERE initialize sensor server mode */
+	if(!(socket = sensor_server_init())) {
+		printf("Error, Cannot initialize sensor socket\n");
+		return EXIT_FAILURE;
+	}
+
+	memset(param_thread, 0, sizeof(thread_parameters)*LIMIT_CONNECTIONS);
+
+	for(;;) {
+		printf("[+] Sender Waiting connections...\n");
+		if((s_accepted = server_accept(socket, &remote))==0) {
 			printf("Error, accept function");
+			continue;
 		}
-		
-		aux_threads = getAvailable_thread(cont_threads);
-		if(aux_threads == -1) {
+
+		if(!getAvailable_thread(&n_thread)) {
 			close(s_accepted);
 			printf("Error, there is not any thread available\n");
 			continue;
 		}
-		setValue_thread(&cont_threads[aux_threads], 1);
+		setValue_thread(n_thread, 1);
 
-		param_thread[aux_threads].socket_ = s_accepted;
-		param_thread[aux_threads].thread_id = &cont_threads[aux_threads];
-		sprintf(param_thread[aux_threads].msn, "Thread: %d\0", aux_threads);
+		param_thread[n_thread].socket = s_accepted;
+		param_thread[n_thread].thread_id = n_thread;
+		sprintf(param_thread[n_thread].msg, "Thread: %d\0", n_thread);
 
-		_thread_aux = pthread_create(&_threads[aux_threads], NULL, _checkSensor, (void *)&param_thread[aux_threads]);
-		if(_thread_aux) {
+		r_thread = pthread_create(&threads_ids[n_thread], NULL, checkSensor, (void *)&param_thread[n_thread]);
+		if(r_thread) {
 			printf("Error, pthread_create function\n");
 			continue;
 		}
 	}
 
-	aux_threads = LIMIT_CONNECTIONS;
-	while(aux_threads--) {
-		pthread_join(_threads[aux_threads], NULL);
+	n_thread = LIMIT_CONNECTIONS;
+	while(n_thread--) {
+		pthread_join(threads_ids[n_thread], NULL);
 	}
 
 	return EXIT_SUCCESS;
 }
 
 
-/** Initialize socket for server mode */
-/* return 1 if success, otherwise 0 */
-char server_init(int *socket_, struct sockaddr_un *local)
-{
-	/* create nonblocking socket */
-	if((*socket_ = socket(AF_UNIX, SOCK_STREAM, 0))==-1)
-		return 0;
+void *notifierServer(void *param) {
+	thread_parameters *param_thread = (thread_parameters *)param;
+	int socket, s_accepted;
+	struct sockaddr_un remote;
 
-	local->sun_family = AF_UNIX;
-	strcpy(local->sun_path, SOCKET_PATH);
-	unlink(local->sun_path);
-
-	if(bind(*socket_, (struct sockaddr *)local, strlen(local->sun_path) + sizeof(local->sun_family)))
-		return 0;
-
-	if(listen(*socket_, LIMIT_CONNECTIONS) == -1)
-		return 0;
-	return 1;
-}
-
-
-/** Accept connection */
-/* return the file descriptor of the socket if success, otherwise 0 */
-int server_accept(int socket_, struct sockaddr_un *remote)
-{
-	int len_r = sizeof(remote);
-	int s_accepted;
-
-	if((s_accepted = accept(socket_, (struct sockaddr *)remote, &len_r))==-1)
-		return 0;
-	return s_accepted;
-}
-
-
-/* functions for managing the threads */
-char getValue_thread(char *thread) {
-	return *thread;
-}
-
-void setValue_thread(char *thread, char value) {
-	*thread = (value) ? 1: 0;
-}
-
-char getAvailable_thread(char *threads) {
-	int i = LIMIT_CONNECTIONS;
-	while(i--) {
-		if(getValue_thread(&threads[i]))
-			continue;
-		return i;
+	/** HERE initialize notifier server mode */
+	if(!(socket = notifier_server_init())) {
+		printf("Error, Cannot initialize notifier socket\n");
+		return NULL;
 	}
-	return -1;
+
+	for(;;) {
+		printf("[+] Notifier -- Waiting connections...\n");
+		if((s_accepted = server_accept(socket, &remote))==0) {
+			printf("Error, accept function");
+			continue;
+		}
+
+		poll_notifier(s_accepted, param_thread);
+
+	}
 }
 
+void poll_notifier(int socket, thread_parameters *param_thread) {
 
-void *_checkSensor(void *param) {
+	int sent_b, i;
 	char buffer[64];
-	int aux;
-	char *found;
-	char limit_ = 10;
+	char limit = 10, value = 0;
+
+	printf(" -- Pool notifier iniciado -- \n");
+	for(;;) {
+
+		for (i = 0; i < LIMIT_CONNECTIONS; i++) {
+
+			getValue_thread(param_thread[i].thread_id, &value);
+
+			if(!value)
+				continue;
+
+			sprintf(buffer, "%s :: %s\0", param_thread[i].header, param_thread[i].msg);
+			sent_b = send(socket, buffer, strlen(buffer), MSG_NOSIGNAL);
+			if(sent_b == -1 || !sent_b) {
+				if(limit--)
+					continue;
+				printf(" -- Pool notifier terminado -- \n");
+				return;
+			}
+			else {
+				limit = 10;
+			}
+
+		}
+
+		if(limit==10)
+			sleep(3);
+	}
+}
+
+void *checkSensor(void *param) {
 
 	thread_parameters *param_thread = (thread_parameters *)param;
 
-	printf("En el thread -- %s\n", (char *)param_thread->msn);
+	printf("En el thread -- %s\n", (char *)param_thread->msg);
 
-	sleep(2);
+	int read_b;
+	char buffer[64];
+	char limit = 10;
 
-	printf(" -- Thread terminado -- %s\n", (char *)param_thread->msn);
+	while(limit) {
+		read_b = recv(param_thread->socket, buffer, sizeof(buffer), 0);
+
+		switch(read_b) {
+			case -1:
+				sleep(1);
+				continue;
+			case 0:
+				if(limit--)
+					continue;
+				break;
+			default:
+				buffer[read_b] = 0x00;
+
+				if(read_b < 3) {
+					printf("First values must be grather than 3 (length)");
+				}
+				else if(!memcmp(buffer, "##", 2)) {
+					/* validate input 16 bytes max */
+					printf("(%d) [+] Header - %s ++ %d\n", param_thread->thread_id, buffer, read_b);
+					memcpy(param_thread->header, buffer, read_b + 1);
+					poll_sensor(param);
+				}
+				limit = 0;
+		}
+	}
+
+
+	printf(" -- Thread terminado -- %s\n", (char *)param_thread->msg);
 	setValue_thread(param_thread->thread_id, 0);
+	close(param_thread->socket);
+}
+
+
+void poll_sensor(void *param) {
+
+	thread_parameters *param_thread = (thread_parameters *)param;
+
+	int read_b;
+	char buffer[64];
+	char limit = 10;
+
+	for(;;) {
+		read_b = recv(param_thread->socket, buffer, sizeof(buffer), 0);
+
+		if(read_b == -1) {
+			sleep(1);
+			continue;
+		}
+		else if(read_b == 0) {
+			if(limit--)
+				continue;
+			break;
+		}
+
+		buffer[read_b] = 0x00;
+		memcpy(param_thread->msg, buffer, read_b + 1);
+		printf("(%d) [+] %s - %s\n", param_thread->thread_id, param_thread->header, buffer);
+	}
 }
