@@ -1,0 +1,18 @@
+# ESTA REGLA PERMITE DETECTAR CUANDO UN MODULO USB-UART ES CONECTADO A LA TARJETA 
+# RASPBERRYPI 3 Y EJECUTA UN SCRIPT QUE ACTIVA LA ADQUISICION
+# PARA CREAR ESTA REGLA SEGUIMOS LOS SIGUIENTES PASOS:
+#	1.OBTENEMOS LA INFORMACION DEL MODULO USB - UART
+#		udevadm info -a -p $(udevadm info -q path /dev/sdb/)
+#	2.CREAMOS LA REGLA INDICANDO QUE: 
+#		ACTION == "add" 
+#		SUBSYSTEM == "tty",
+#		ATTRS{idProduct}== "6001"
+#		ATTRS{idVendor} == "0403"
+#		ATTRS{serial}	== "A402JTR3"
+
+ACTION=="add", SUBSYSTEM=="tty", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", 
+ATTRS{serial}=="A402JTR3", SYMLINK+="FTDI_ADQ", RUN+="/usr/local/bin/proyStart.sh"
+
+#ACTION=="remove", SUBSYSTEM=="tty", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", 
+#ATTRS{serial}=="A402JTR3", RUN+="/usr/local/bin/proyStop.sh"
+
