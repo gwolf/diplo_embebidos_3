@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Start temperature sensor as monyt client
+#
+# Victor Martinez Sanchez
+
+case "$1" in
+  start)
+	echo "Starting Temperature sensor as monyt client..."
+	sensor '##TEMP' /root/scripts/temperature.sh &   # Execute the temperature sensor
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
