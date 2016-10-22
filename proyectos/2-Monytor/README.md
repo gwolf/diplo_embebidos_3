@@ -1,16 +1,21 @@
-Nombre de Proyecto: Monytor (Nombre preliminar)
+Name of Project: Monytor ( preliminar name)
 
-Integrantes:
+Team members:
 
 	Victor Martínez Sánchez 
 
 	Mauricio Quijada Jiménez
 
 
-Descripción: El proyecto consiste en diseñar un Framework para el uso de sensores y actuadores.
+Description: 
+The project is to design a Framework for the use of sensors and actuators, and send the measured values by GSM network.
 
+Content Files:
 
-Archivos contenidos:
+	Arquitectura_Framework.jpg  #Schematic project.
+	Input.sh 		    #This script read a potenciometer and return a measured value.(first script for the GPIOS of Intel Galileo)
 
-	Arquitectura_Framework.jpg  #Imagen que describe el proyecto de manera esquemática
-	Input.sh 		    #Programa  que lee un potenciómetro y lo arroja en terminal
+Folders:
+
+       Scripts       #Contains inits scripts
+       Server_Client #Contains programs that collects data and sends a SMS. 
