@@ -1,4 +1,4 @@
-This directory contains the folloging scripts, 
+This directory contains the following scripts, 
 1 2 and 3 read sensors.
 4 5 6 and 7 are init scripts
 
