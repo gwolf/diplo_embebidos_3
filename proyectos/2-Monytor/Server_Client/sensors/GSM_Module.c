@@ -126,12 +126,12 @@ int main(int argc, char **argv)
 		int i, read_b, idx;
 		for(i=0, read_b = 0, idx = 0; i<numInputs; i++) {
 			// read from stdin, and store it on msg buffer
-			read_b += scanf("%s", buffer);
+			read_b = read(0, buffer, 64);
 			memcpy(msg + idx, buffer, read_b);
 
 			// update index
 			idx += read_b;
-			msg[idx] = ",";
+			msg[idx] = ',';
 			idx += 1;
 		}
 		msg[idx] = 0;
