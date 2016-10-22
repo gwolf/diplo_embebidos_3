@@ -5,6 +5,7 @@
 #include <termio.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <syslog.h>
 
 #include <pthread.h>
 
@@ -61,22 +62,27 @@ int main(int argc, char **argv)
 {
 	char *tty;
 	int uart;
-	char buffer[256];
+	char buffer[64], msg[256];
 	int limit_ = 10;
+	int numInputs;
 
 
-	if(argc!=2)
+	/* validate arguments */
+	if(argc!=3)
 	{
-		printf("Usage: %s /dev/tty*\n", argv[0]);
+		syslog(LOG_INFO, "Usage: %s /dev/tty* numInputs\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 	tty = argv[1];
+	numInputs = atoi(argv[2]);
+
+	/** Open logger */
+	openlog("GSM_logger", LOG_PID|LOG_CONS, LOG_USER);
 
 	/**** Open and configure uart ****/
-	printf("[+] Opening: %s\n\n", tty);
+	syslog(LOG_INFO, "[+] Opening: %s\n\n", tty);
 	openUART(&uart, tty);
 
-	printf("Waiting 5 seconds\n");		
 	sleep(5);
 
 
@@ -86,19 +92,19 @@ int main(int argc, char **argv)
 	switch(send_InitCommands(uart))
 	{
 		case GSM_ERROR_AT:
-			printf("Error, GSM does not respond\n");
+			syslog(LOG_INFO, "Error, GSM does not respond\n");
 			return EXIT_FAILURE;
 			break;
 		case GSM_ERROR_SIM:
-			printf("Error, SIM is not ready\n");
+			syslog(LOG_INFO, "Error, SIM is not ready\n");
 			return EXIT_FAILURE;
 			break;
 		case GSM_ERROR_ECHO:
-			printf("Error, Echo command failed\n");
+			syslog(LOG_INFO, "Error, Echo command failed\n");
 			return EXIT_FAILURE;
 	}
 	
-	/* Verify if modem is registered to a network */
+	/* Verify if modem is registered on the GSM network */
 	while(!modemRegistered(uart)) {
 		sleep(3);
 		if(limit_--)
@@ -115,16 +121,28 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	while(1) {
+	limit_ = 60;
+	for(;;) {
+		int i, read_b, idx;
+		for(i=0, read_b = 0, idx = 0; i<numInputs; i++) {
+			// read from stdin, and store it on msg buffer
+			read_b += scanf("%s", buffer);
+			memcpy(msg + idx, buffer, read_b);
 
-		/*composeDataMessage(&data, buffer);*/
+			// update index
+			idx += read_b;
+			msg[idx] = ",";
+			idx += 1;
+		}
+		msg[idx] = 0;
 
-		printf("Messaje to send to the Server\n");		
-		scanf("%s", buffer);
+		if (limit_--)
+			continue;
 
-		printf("[*] Data to send by MSN: %s\n", buffer);
+		limit_ = 60;
+		syslog(LOG_INFO, "[*] Data to send by MSN: %s\n", msg);
 
-		sendMSG(&uart, "+525548548089\0", buffer);
+		sendMSG(&uart, "+525548548089\0", msg);
 
 	}
 	
@@ -133,6 +151,11 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;
 }
 
+/**
+ * @brief Set the uart configuration
+ * @param the uart pointer
+ * @return Nothing
+ */
 void configureUART(int *uart)
 {
 	tcgetattr(*uart, &options);
@@ -144,11 +167,17 @@ void configureUART(int *uart)
 	tcsetattr(*uart, TCSANOW, &options);
 }
 
+/**
+ * @brief Open the UART device
+ * @param the uart pointer, where the fd will be store
+ * @param the device that will be open
+ * @return Nothing
+ */
 void openUART(int *uart, char *tty) 
 {
 	*uart = open(tty, O_RDWR | O_NOCTTY | O_NDELAY);
 	if(*uart==-1) {
-		printf("Error: cant open uart\n");
+		syslog(LOG_INFO, "Error: cant open uart\n");
 		exit(EXIT_FAILURE);
 	}
 	configureUART(uart);
@@ -158,6 +187,12 @@ void openUART(int *uart, char *tty)
 }
 
 
+/**
+ * @brief Generic function to wait a GSM command respond
+ * @param the uart pointer
+ * @param the response we are waiting
+ * @return Nothing
+ */
 char waitResponse(int *uart, char response)
 {
         char buffer[256];
@@ -169,11 +204,11 @@ char waitResponse(int *uart, char response)
         aux = read(*uart, buffer, sizeof(buffer));
         if(aux!=-1 && aux>1)
         {
-                printf("  --- Recieved: %d: ", aux);
+                syslog(LOG_INFO, "  --- Recieved: %d: ", aux);
                 for(i=0; i<aux; i++)
                         if(buffer[i]>31 && buffer[i]<127)
-                                printf("%c", buffer[i]);
-                printf("\n");
+                                syslog(LOG_INFO, "%c", buffer[i]);
+                syslog(LOG_INFO, "\n");
 
 		found = strstr(buffer, "ERROR\0");
 		if(found) {
@@ -288,28 +323,41 @@ char waitResponse(int *uart, char response)
         return 0;
 }
 
+/**
+ * @brief Write on the uart
+ * @param the uart pointer
+ * @param the data that will be written
+ * @return 1 if success, 0 otherwise
+ */
 char writeUART(int *uart, char *bytes)
 {
 	int aux;
-	printf("[+] Send -> size:%d, command: %s\n", strlen(bytes), bytes);
+	syslog(LOG_INFO, "[+] Send -> size:%d, command: %s\n", strlen(bytes), bytes);
 	aux = write(*uart, bytes, strlen(bytes));
 	if(!aux || aux==-1) {
-		printf("Error: can't send command:\"%s\"\n", bytes);
+		syslog(LOG_INFO, "Error: can't send command:\"%s\"\n", bytes);
 		return 0;
 	}
-	printf("[+] Command sent\n");
+	return 1;
 }
 
+/**
+ * @brief Send a GSM command
+ * @param the uart pointer
+ * @param the command that will be sent
+ * @param the time to wait for the response
+ * @return 1 if success, 0 otherwise
+ */
 char sendCommand(int *uart, char *command, char wait)
 {
 	int aux, i;
-	printf("[+] Send -> size:%d, command: %s\n", strlen(command), command);
+	syslog(LOG_INFO, "[+] Send -> size:%d, command: %s\n", strlen(command), command);
 	
 	/* Send the command */
 	aux = write(*uart, command, strlen(command));
 	
 	if(!aux || aux==-1) {
-		printf("[-] ERROR: can't send command:\"%s\"\n", command);
+		syslog(LOG_INFO, "[-] ERROR: can't send command:\"%s\"\n", command);
 		return 0;
 	}	
 	usleep(200000);
@@ -318,7 +366,7 @@ char sendCommand(int *uart, char *command, char wait)
 		sleep(5);
 	if(wait)
 	{
-		printf("--- Waiting response\n");
+		syslog(LOG_INFO, "--- Waiting response\n");
 		i = 0;
 		while(i<10 || (waitForever && i<LIMIT_WAITFOREVER)) {
 			if(waitResponse(uart, wait))
@@ -332,7 +380,13 @@ char sendCommand(int *uart, char *command, char wait)
 	return 0;
 }
 
-/* Send the message "msg" to the phone number "number" */
+/**
+ * @brief Send a GSM message
+ * @param the uart pointer
+ * @param the number where the msg will be sent
+ * @param the message
+ * @return 1 if success, 0 otherwise
+ */
 char sendMSG(int *uart, char *number, char *msg)
 {
 	char buf[256];
@@ -378,13 +432,18 @@ char sendMSG(int *uart, char *number, char *msg)
 
 	/* verify Error flag */
 	if(_error) {
-		printf("[-] ERROR: Can not send message\n");
+		syslog(LOG_INFO, "[-] ERROR: Can not send message\n");
 		_error = 0;
 		return 0;
 	}
 	return 1;
 }
 
+/**
+ * @brief Send Initialize commands
+ * @param the uart descriptor
+ * @return 1 if success, 0 otherwise
+ */
 char send_InitCommands(int uart)
 {
 	char buffer[254];
@@ -421,6 +480,11 @@ char send_InitCommands(int uart)
 	return GSM_OK;
 }
 
+/**
+ * @brief Verify if the modem is registered
+ * @param the uart descriptor
+ * @return 1 if success, 0 otherwise
+ */
 char modemRegistered(int uart)
 {
 	char buffer[64];
@@ -431,6 +495,11 @@ char modemRegistered(int uart)
 	return sendCommand(&uart, buffer, GSM_CREG);
 }
 
+/**
+ * @brief Enable text mode on GSM
+ * @param the uart descriptor
+ * @return 1 if success, 0 otherwise
+ */
 char enableTextMode(int uart)
 {
 	char buffer[64];
