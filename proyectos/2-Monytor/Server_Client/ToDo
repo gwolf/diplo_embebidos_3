@@ -1,0 +1,14 @@
+
+This is the To Do list:
+
+* Add logging to the rest of the modules, using syslog
+* Add threads on the server notifier side to let add more than one notifier
+* Add configuration files to load initial configuration, and configuration to each module loaded by sensor or notifier modules
+* Improve the way the initial scripts are handler, because now just the start works
+* Create more modules, specially on the GSM side
+
+* Add notifiers via network
+* Add an API so you can check the status of the sensors via executing a GET method
+* Add functionality so it can handle actuators
+
+* Improve every aspect as posible, taking the hints of our modules evaluators
