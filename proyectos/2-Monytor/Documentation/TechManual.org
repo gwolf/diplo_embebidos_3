@@ -13,7 +13,7 @@ En la siguiente tabla se pueden observar los temas a tratar en
 |-----------------------------------------------------------------+--------|
 | Contenido                                                       | Liga   |
 |-----------------------------------------------------------------+--------|
-| *Introducción*                                                  |        |
+| [[TechManual.org#introducción][*Introducción*]]                                                  |        |
 |-----------------------------------------------------------------+--------|
 | *Analisis*                                                      |        |
 |-----------------------------------------------------------------+--------|
@@ -43,9 +43,9 @@ que quiere sensar y el que va a hacer despues con estos datos obtenidos.
 ** Analisis
 
 Como se describio en la Introduccion las aplicaciones embebidas que identificamos
-requieren en general de 2 agentes, el \sensor\ el \actuador\ para que se pueda
+requieren en general de 2 agentes, el /sensor/ el /actuador/ para que se pueda
 facilidar la integración de estos, se requiere el uso de un tercer agente
-el cual se llamara \servidor\, a continuación se describiran estos 3 agentes
+el cual se llamara /servidor/, a continuación se describiran estos 3 agentes
 con el punto de vista del framework:
 
 	- Sensor: Programa el cual requiere obtener los datos de una variable fisica.
@@ -54,14 +54,18 @@ con el punto de vista del framework:
 
 Utilizando las facilidades que nos proporcionan los sistemas GNU/Linux en cuanto al
 desarrollo de aplicaciones la solución del framework se orientó al uso de estas facilidades
-tales como \sockets\, \pipes\, \redireccionamiento\, \scripts de arranque\ entre otros.
+tales como /sockets/, /pipes/, /redireccionamiento/, /scripts de arranque/ entre otros.
 
 La aplicación se desarrollo en el Lenguaje C utilizando librerias estandar para que
-sea facilmente portable entre sistemas de tipo UNIX. A continuación se mostraran diagramas
-mostrando la arquitectura general de los agentes identificados.
+sea facilmente portable entre sistemas de tipo UNIX. A continuación se mostrara el diagrama
+mostrando la arquitectura general de los agentes identificados y donde interactuan.
 
 #+ATTR_HTML: class="center"
 [[img/agente_arch.png]]
+
+Los pipes se usan para para redireccionar la salida y entrada estandar de los sensores y 
+notificadors respectivamente.
+
 
 #+BEGIN_CENTER
 ¡Mucha suerte!
