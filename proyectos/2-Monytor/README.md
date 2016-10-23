@@ -13,4 +13,3 @@ Descripción: El proyecto consiste en diseñar un Framework para el uso de senso
 Archivos contenidos:
 
 	Arquitectura_Framework.jpg  #Imagen que describe el proyecto de manera esquemática
-	Input.sh 		    #Programa  que lee un potenciómetro y lo arroja en terminal
