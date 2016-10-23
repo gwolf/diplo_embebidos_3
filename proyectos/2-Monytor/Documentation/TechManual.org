@@ -24,7 +24,8 @@ En la siguiente tabla se pueden observar los temas a tratar en
 | *Conclusiones*                                                  |        |
 |-----------------------------------------------------------------+--------|
 
-	** Introducción
+
+** Introducción
 
 Muchas de las aplicaciones de sistemas embebidos requieren el uso de sensores
 y actuadores de alguna forma, por ejemplo sistemas como invernaderos inteligentes,
@@ -59,6 +60,8 @@ La aplicación se desarrollo en el Lenguaje C utilizando librerias estandar para
 sea facilmente portable entre sistemas de tipo UNIX. A continuación se mostraran diagramas
 mostrando la arquitectura general de los agentes identificados.
 
+#+ATTR_HTML: class="center"
+[[img/agente_arch.png]]
 
 #+BEGIN_CENTER
 ¡Mucha suerte!
