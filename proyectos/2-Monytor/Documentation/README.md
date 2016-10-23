@@ -1,0 +1,67 @@
+#+title: Framework Monytor - Manual Técnico
+#+author: Martinez Sanchez Victor
+#+date: Diplomado de Linux Embebido
+#+language: en
+#+options: toc:nil
+
+El projecto /Monytor/ intenta ser un pequeño framework para el desarrollo
+de aplicacion que en general requieren el sensado de algunas variables
+y realizar alguna accion con las variables sensadas.
+
+En la siguiente table se pueden observar los tremas a tratar en
+
+|-----------------------------------------------------------------+--------|
+| Contenido                                                       | Liga   |
+|-----------------------------------------------------------------+--------|
+| *Introducción*                                                  |        |
+|-----------------------------------------------------------------+--------|
+| *Analisis*                                                      |        |
+|-----------------------------------------------------------------+--------|
+| *Implementación*                                                |        |
+|-----------------------------------------------------------------+--------|
+| *Aplicación*                                                    |        |
+|-----------------------------------------------------------------+--------|
+| *Conclusiones*                                                  |        |
+|-----------------------------------------------------------------+--------|
+
+## Introducción
+
+Muchas de las aplicaciones de sistemas embebidos requieren el uso de sensores
+y actuadores de alguna forma, por ejemplo sistemas como invernaderos inteligentes,
+monitoreo de carga de manera remota, monitoreo de pacientes, domotica; En fin
+existen muchos sistemas de este tipo y en general la mayoria de este tipo
+de aplicaciones requieren hacer el sensado con alguna variable y despues communicar
+o realizar algun acción con esos valores leidos.
+
+Para facilitar el desarrollo de este tipo de aplicaciones se decidio crear un
+framework, con el cual las personas que requieren el uso de sensores y actuadores
+les facilite la integración de estos, y asi solamente centrarse en las variables
+que quiere sensar y el que va a hacer despues con estos datos obtenidos.
+
+
+## Analisis
+
+Como se describio en la Introduccion las aplicaciones embebidas que identificamos
+requieren en general de 2 agentes, el \sensor\ el \actuador\ para que se pueda
+facilidar la integración de estos, se requiere el uso de un tercer agente
+el cual se llamara \servidor\, a continuación se describiran estos 3 agentes
+con el punto de vista del framework:
+
+	- Sensor: Programa el cual requiere obtener los datos de una variable fisica.
+	- Actuador: Programa el cual realizara alguna acción con los datos que recibe.
+	- Servidor: Programa que su única tarea es administrar a los sensores y actuadores.
+
+Utilizando las facilidades que nos proporcionan los sistemas GNU/Linux en cuanto al
+desarrollo de aplicaciones la solución del framework se orientó al uso de estas facilidades
+tales como \sockets\, \pipes\, \redireccionamiento\, \scripts de arranque\ entre otros.
+
+La aplicación se desarrollo en el Lenguaje C utilizando librerias estandar para que
+sea facilmente portable entre sistemas de tipo UNIX. A continuación se mostraran diagramas
+mostrando la arquitectura general de los agentes identificados.
+
+
+#+BEGIN_CENTER
+¡Mucha suerte!
+
+/– Martínez Sánchez Víctor/
+#+END_CENTER
