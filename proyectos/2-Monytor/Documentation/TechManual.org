@@ -15,9 +15,9 @@ En la siguiente tabla se pueden observar los temas a tratar en
 |-----------------------------------------------------------------+--------|
 | [[TechManual.org#introducción][Introducción]]                                                  |        |
 |-----------------------------------------------------------------+--------|
-| [[TechManual.org#analisis][Analisis]                                                      |        |
+| [[TechManual.org#analisis][Analisis]]                                                      |        |
 |-----------------------------------------------------------------+--------|
-| *Implementación*                                                |        |
+| [[TechManual.org#implementación][Implementación]]                                                |        |
 |-----------------------------------------------------------------+--------|
 | *Aplicación*                                                    |        |
 |-----------------------------------------------------------------+--------|
@@ -48,9 +48,9 @@ facilidar la integración de estos, se requiere el uso de un tercer agente
 el cual se llamara /servidor/, a continuación se describiran estos 3 agentes
 con el punto de vista del framework:
 
-	- Sensor: Programa el cual requiere obtener los datos de una variable fisica.
-	- Actuador: Programa el cual realizara alguna acción con los datos que recibe.
-	- Servidor: Programa que su única tarea es administrar a los sensores y actuadores.
+	- /Sensor/: Programa el cual requiere obtener los datos de una variable fisica.
+	- /Actuador/: Programa el cual realizara alguna acción con los datos que recibe.
+	- /Servidor/: Programa que su única tarea es administrar a los sensores y actuadores.
 
 Utilizando las facilidades que nos proporcionan los sistemas GNU/Linux en cuanto al
 desarrollo de aplicaciones la solución del framework se orientó al uso de estas facilidades
@@ -63,8 +63,27 @@ mostrando la arquitectura general de los agentes identificados y donde interactu
 #+ATTR_HTML: class="center"
 [[img/agente_arch.png]]
 
-Los pipes se usan para para redireccionar la salida y entrada estandar de los sensores y 
-notificadors respectivamente.
+Los pipes se usan para para redireccionar la salida y entrada estandar de los sensores y
+notificadores respectivamente, de esta forma se pode asegurar que añadir un nuevo sensor
+es sencillo, ya que no se pide usar algun /include/ del framework desarrollado. A continuación
+se listan las caracteristicas que deben de tener los sensores y los actuadores para que
+puedan interactuar con el framework.
+
+	- Requerimientos Sensor: El programa tendra la lógica para leer el sensor y lo tiene que enviar por la salida estandar.(en C un /printf/)
+	- Requerimientos Actuador: El programa leera de la entrada estandar(En C un /scanf/) el valor de los sensores que el servidor tiene registrado. La lógica la hace el programa.
+
+Se cree que teniendo estas caracteristicas se pueden agregar sensores y actuadores de manera
+sencilla y la persona que esta desarrollando con la ayuda del framework solamente se tiene que
+centrar en la funcionalidad del sistema.
+
+Las ventajas de poder usar esta solución se tienen cuando se poseen muchos sensores y para no
+mezclar toda la funcionalidad se podria modularizar el sistema a desarrollar.
+
+
+** Implementación
+
+En esta sección se mostraran partes del código que se desarrollo, con una explicación para mostrar
+el como se implementó el sistema.
 
 
 #+BEGIN_CENTER
