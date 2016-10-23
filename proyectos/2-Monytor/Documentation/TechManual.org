@@ -5,10 +5,10 @@
 #+options: toc:nil
 
 El projecto /Monytor/ intenta ser un pequeño framework para el desarrollo
-de aplicacion que en general requieren el sensado de algunas variables
-y realizar alguna accion con las variables sensadas.
+de aplicaciones que en general requieren el sensado de algunas variables
+y realizar alguna acción con las variables sensadas.
 
-En la siguiente table se pueden observar los tremas a tratar en
+En la siguiente tabla se pueden observar los temas a tratar en
 
 |-----------------------------------------------------------------+--------|
 | Contenido                                                       | Liga   |
@@ -24,7 +24,7 @@ En la siguiente table se pueden observar los tremas a tratar en
 | *Conclusiones*                                                  |        |
 |-----------------------------------------------------------------+--------|
 
-## Introducción
+	** Introducción
 
 Muchas de las aplicaciones de sistemas embebidos requieren el uso de sensores
 y actuadores de alguna forma, por ejemplo sistemas como invernaderos inteligentes,
@@ -39,7 +39,7 @@ les facilite la integración de estos, y asi solamente centrarse en las variable
 que quiere sensar y el que va a hacer despues con estos datos obtenidos.
 
 
-## Analisis
+** Analisis
 
 Como se describio en la Introduccion las aplicaciones embebidas que identificamos
 requieren en general de 2 agentes, el \sensor\ el \actuador\ para que se pueda
@@ -63,5 +63,5 @@ mostrando la arquitectura general de los agentes identificados.
 #+BEGIN_CENTER
 ¡Mucha suerte!
 
-/– Gunnar Wolf, Sandino Araico/
+/– Martínez Sánchez Víctor/
 #+END_CENTER
