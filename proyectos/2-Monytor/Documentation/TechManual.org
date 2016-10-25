@@ -96,10 +96,10 @@ mediante sysfs y lo manda por /stdout/ cada segundo.
 # we need as argument the analog input number.
 ### 
 
-INPUT="$1"
+INPUT=$1
 
 # Validate if is given
-if [ -z "$INPUT" ] ; then
+if [ "$#" -ne 1 ] ; then
         echo "Usage: $0 [1-5]"
         exit 1
 fi
@@ -117,10 +117,7 @@ fi
 # A3 = 54
 # A4 = 56
 # A5 = 58
-# NOTE: We use $1 because of the " the operation fails,
-#   but before we ensure the argument is given and it is
-#   number
-GPIO_NUMBER=$(($1 * 2 + 48))
+GPIO_NUMBER=$(($INPUT * 2 + 48))
 # Path where the GPIOs are managed
 GPIO_PATH="/sys/class/gpio"
 # Path where we can obtain the value from the GPIO as
@@ -159,6 +156,105 @@ Para poder usar este pequeño script con el framework, se tiene que ejecutar el 
 
 Donde el /##ID_SENSOR/ es el identificador del sensor, este debe de empezar con dos simbolos /##/, el
 segundo parametro es script que se va a ejecutar.
+
+Ahora se mostrara el script de un programa de ejemplo que de igual manera mediante sysfs, se comunica
+a un pin de salida y envia o no voltaje, se puede usar para prender un led o como en nuestro caso para
+hacer ruido usando un buzzer.
+
+
+#+BEGIN_SRC sh :tangle no
+#!/bin/sh
+####
+# Scripts that write 1 or 0 if the voltage value received is
+# greater than 1000
+# 
+# This script only works the GPIOs of the intel galileo gen 2
+#
+# Victor Martinez Sanchez
+###
+
+OUTPUT=$1
+
+# Validate if is given
+if [ "$#" -ne 1 ] ; then
+        echo "Usage: $0 [1-5]"
+        exit 1
+fi
+
+# Validate input between 0 and 5
+if [ "$OUTPUT" -lt 0 -o "$OUTPUT" -gt 5 ] ; then
+	echo "The input must be between 0 and 5, because it is the analog input GPIO"
+	exit 1
+fi
+
+validate_number "$OUTPUT"
+
+# The GPIOs numbers of the analog input are:
+# A0 = 48
+# A1 = 50
+# A2 = 52
+# A3 = 54
+# A4 = 56
+# A5 = 58
+GPIO_OUT_NUMBER=$(($OUTPUT * 2 + 48))
+# Path where the GPIOs are managed
+GPIO_PATH="/sys/class/gpio"
+# Path where we can obtain the value from the GPIO as 
+#  voltage
+VOLTAGE_PATH="/sys/bus/iio/devices/iio:device0"
+
+# unexport if the directory exists then export the
+# GPIO number to use it
+if [ -d "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER" ] ; then
+	echo "$GPIO_OUT_NUMBER" > "$GPIO_PATH"/unexport
+	sleep 1
+fi
+echo "$GPIO_OUT_NUMBER" > "$GPIO_PATH"/export
+
+# Is needed to set the direction of the GPIO
+echo "out" > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/direction
+
+# Catch the signals HUP, INT or TERM to stop to script
+trap "echo 'Exit' ; exit 1" SIGHUP SIGINT SIGTERM
+
+# Get the value and validate it
+while true ; do
+	read VALUE
+	VOLTAGE=$(echo "$VALUE" | awk '$1=="##TEMP" {print $3}')
+	if [ ! -z "$VOLTAGE" ] ; then
+		logger "Voltage: $VOLTAGE"
+		if [ "$VOLTAGE" -gt 1000 ] ; then
+			echo 1 > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/value
+		else
+			echo 0 > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/value
+		fi
+	fi
+	sleep 1
+done
+#+END_SRC
+
+Como se puede observar el scipt lee de la entrada estandar y filtra el valor del sensor que se ha
+registrado con el id /##TEMP/ y verifica si su valor es o no mayor que 1000.
+
+Este pequeño script como se mencionó lo único que hara es ensender un led (por ejemplo).
+
+Para poder usar este pequeño script con el framework, se tiene que ejecutar el programa como sigue.
+
+#+BEGIN_SRC sh :tangle no
+     notifier /root/scripts/led.sh
+#+END_SRC
+
+
+Para poder usar el programa /sensor/ y /notifier/ se tiene previamente que ejecutar el programa
+/server/ ya que es el encargado de administrar a los sensores y enviar los valores a los notificadores.
+El programa se ejecuta de la siguiente manera.
+
+#+BEGIN_SRC sh :tangle no
+     server
+#+END_SRC
+
+
+
 
 #+BEGIN_CENTER
 ¡Mucha suerte!
