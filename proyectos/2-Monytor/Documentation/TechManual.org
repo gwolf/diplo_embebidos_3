@@ -82,9 +82,83 @@ mezclar toda la funcionalidad se podria modularizar el sistema a desarrollar.
 
 ** Implementación
 
-En esta sección se mostraran partes del código que se desarrollo, con una explicación para mostrar
-el como se implementó el sistema.
+En esta sección se detallara como añadir un programa sensor y un notificador al framework desarrollado,
+esto con el fin de mostrar la facilidad con la cual se puede interactuar con el sistema.
 
+Para comenzar se mostrara un pequeño script en /bash/ que lee el valor de un pin analogico en
+una tarjeta de desarrollo /Intel Galileo Gen2/. El script lee el valor de voltaje en un pin 
+mediante sysfs y lo manda por /stdout/ cada segundo.
+
+#+BEGIN_SRC sh :tangle no
+#!/bin/sh
+####
+# This script reads from the inte galileo analog input,
+# we need as argument the analog input number.
+### 
+
+INPUT="$1"
+
+# Validate if is given
+if [ -z "$INPUT" ] ; then
+        echo "Usage: $0 [1-5]"
+        exit 1
+fi
+
+# Validate input between 0 and 5
+if [ "$INPUT" -lt 0 -o "$INPUT" -gt 5 ] ; then
+        echo "The input must be between 0 and 5, because it is the analog input GPIO"
+        exit 1
+fi
+
+# The GPIOs numbers of the analog input are:
+# A0 = 48
+# A1 = 50
+# A2 = 52
+# A3 = 54
+# A4 = 56
+# A5 = 58
+# NOTE: We use $1 because of the " the operation fails,
+#   but before we ensure the argument is given and it is
+#   number
+GPIO_NUMBER=$(($1 * 2 + 48))
+# Path where the GPIOs are managed
+GPIO_PATH="/sys/class/gpio"
+# Path where we can obtain the value from the GPIO as
+#  voltage
+VOLTAGE_PATH="/sys/bus/iio/devices/iio:device0"
+
+# We unexport ant the export the GPIO number to use it
+if [ -d "$GPIO_PATH"/gpio"$GPIO_NUMBER" ] ; then
+        echo "$GPIO_NUMBER" > "$GPIO_PATH"/unexport
+        sleep 1
+fi
+echo "$GPIO_NUMBER" > "$GPIO_PATH"/export
+
+# We need to set the direction of the GPIO
+# In this case if just for input
+echo "in" > "$GPIO_PATH"/gpio"$GPIO_NUMBER"/direction
+
+# Catch the signals HUP, INT or TERM to stop to script
+trap "exit 1" SIGHUP SIGINT SIGTERM
+
+while true ; do
+        echo $(cat "$VOLTAGE_PATH"/in_voltage"$INPUT"_raw)
+        sleep 1
+done
+#+END_SRC
+
+
+Como se observa en el código la única salida que se tiene es mediante un /echo/ y esto es para mostrar
+el valor que se lee del pin.
+
+Para poder usar este pequeño script con el framework, se tiene que ejecutar el programa como sigue.
+
+#+BEGIN_SRC sh :tangle no
+     sensor '##ID_SENSOR' /root/scripts/test.sh
+#+END_SRC
+
+Donde el /##ID_SENSOR/ es el identificador del sensor, este debe de empezar con dos simbolos /##/, el
+segundo parametro es script que se va a ejecutar.
 
 #+BEGIN_CENTER
 ¡Mucha suerte!
