@@ -1,0 +1,278 @@
+#+title: Framework Monytor - Manual Técnico
+#+author: Martinez Sanchez Victor
+#+date: Diplomado de Linux Embebido
+#+language: en
+#+options: toc:nil
+
+El projecto /Monytor/ intenta ser un pequeño framework para el desarrollo
+de aplicaciones que en general requieren el sensado de algunas variables
+y realizar alguna acción con las variables sensadas.
+
+En la siguiente tabla se pueden observar los temas a tratar en
+
+|-----------------------------------------------------------------|
+| Contenido                                                       |
+|-----------------------------------------------------------------|
+| [[TechManual.org#introducción][Introducción]]                   |
+|-----------------------------------------------------------------|
+| [[TechManual.org#arquitectura][Arquitectura]]                   |
+|-----------------------------------------------------------------|
+| [[TechManual.org#implementación][Implementación]]               |
+|-----------------------------------------------------------------|
+| [[TechManual.org#instalación][Instalación]]                     |
+|-----------------------------------------------------------------|
+
+
+** Introducción
+
+Muchas de las aplicaciones de sistemas embebidos requieren el uso de sensores
+y actuadores de alguna forma, por ejemplo sistemas como invernaderos inteligentes,
+monitoreo de carga de manera remota, monitoreo de pacientes, domotica; En fin
+existen muchos sistemas de este tipo y en general la mayoria de este tipo
+de aplicaciones requieren hacer el sensado con alguna variable y despues communicar
+o realizar algun acción con esos valores leidos.
+
+Para facilitar el desarrollo de este tipo de aplicaciones se decidio crear un
+framework, con el cual las personas que requieren el uso de sensores y actuadores
+les facilite la integración de estos, y asi solamente centrarse en las variables
+que quiere sensar y el que va a hacer despues con estos datos obtenidos.
+
+
+** Arquitectura
+
+Como se describió en la Introducción las aplicaciones embebidas que identificamos
+requieren en general de 2 agentes, el /sensor/ el /actuador/ para que se pueda
+facilidar la integración de estos, se requiere el uso de un tercer agente
+el cual se llamara /servidor/, a continuación se describiran estos 3 agentes
+con el punto de vista del framework:
+
+	- /Sensor/: Programa el cual requiere obtener los datos de una variable fisica.
+	- /Actuador/: Programa el cual realizara alguna acción con los datos que recibe.
+	- /Servidor/: Programa que su única tarea es administrar a los sensores y actuadores.
+
+Utilizando las facilidades que nos proporcionan los sistemas GNU/Linux en cuanto al
+desarrollo de aplicaciones la solución del framework se orientó al uso de estas facilidades
+tales como /sockets/, /pipes/, /redireccionamiento/, /scripts de arranque/ entre otros.
+
+La aplicación se desarrollo en el Lenguaje C utilizando librerias estandar para que
+sea facilmente portable entre sistemas de tipo UNIX. A continuación se mostrara el diagrama
+mostrando la arquitectura general de los agentes identificados y donde interactuan.
+
+#+ATTR_HTML: class="center"
+[[img/agente_arch.png]]
+
+Los pipes se usan para para redireccionar la salida y entrada estandar de los sensores y
+notificadores respectivamente, de esta forma se pode asegurar que añadir un nuevo sensor
+es sencillo, ya que no se pide usar algun /include/ del framework desarrollado. A continuación
+se listan las caracteristicas que deben de tener los sensores y los actuadores para que
+puedan interactuar con el framework.
+
+	- Requerimientos Sensor: El programa tendra la lógica para leer el sensor y lo tiene que enviar por la salida estandar.(en C un /printf/)
+	- Requerimientos Actuador: El programa leera de la entrada estandar(En C un /scanf/) el valor de los sensores que el servidor tiene registrado. La lógica la hace el programa.
+
+Se cree que teniendo estas caracteristicas se pueden agregar sensores y actuadores de manera
+sencilla y la persona que esta desarrollando con la ayuda del framework solamente se tiene que
+centrar en la funcionalidad del sistema.
+
+Las ventajas de poder usar esta solución se tienen cuando se poseen muchos sensores y para no
+mezclar toda la funcionalidad se podria modularizar el sistema a desarrollar.
+
+
+** Implementación
+
+En esta sección se detallara como añadir un programa sensor y un notificador al framework
+desarrollado, esto con el fin de mostrar la facilidad con la cual se puede interactuar con
+el sistema.
+
+Para comenzar se mostrara un pequeño script en /bash/ que lee el valor de un pin analogico en
+una tarjeta de desarrollo /Intel Galileo Gen2/. El script lee el valor de voltaje en un pin 
+mediante sysfs y lo manda por /stdout/ cada segundo.
+
+#+BEGIN_SRC sh :tangle no
+#!/bin/sh
+####
+# This script reads from the inte galileo analog input,
+# we need as argument the analog input number.
+### 
+
+INPUT=$1
+
+# Validate if is given
+if [ "$#" -ne 1 ] ; then
+        echo "Usage: $0 [1-5]"
+        exit 1
+fi
+
+# Validate input between 0 and 5
+if [ "$INPUT" -lt 0 -o "$INPUT" -gt 5 ] ; then
+        echo "The input must be between 0 and 5, because it is the analog input GPIO"
+        exit 1
+fi
+
+# The GPIOs numbers of the analog input are:
+# A0 = 48
+# A1 = 50
+# A2 = 52
+# A3 = 54
+# A4 = 56
+# A5 = 58
+GPIO_NUMBER=$(($INPUT * 2 + 48))
+# Path where the GPIOs are managed
+GPIO_PATH="/sys/class/gpio"
+# Path where we can obtain the value from the GPIO as
+#  voltage
+VOLTAGE_PATH="/sys/bus/iio/devices/iio:device0"
+
+# We unexport ant the export the GPIO number to use it
+if [ -d "$GPIO_PATH"/gpio"$GPIO_NUMBER" ] ; then
+        echo "$GPIO_NUMBER" > "$GPIO_PATH"/unexport
+        sleep 1
+fi
+echo "$GPIO_NUMBER" > "$GPIO_PATH"/export
+
+# We need to set the direction of the GPIO
+# In this case if just for input
+echo "in" > "$GPIO_PATH"/gpio"$GPIO_NUMBER"/direction
+
+# Catch the signals HUP, INT or TERM to stop to script
+trap "exit 1" SIGHUP SIGINT SIGTERM
+
+while true ; do
+        echo $(cat "$VOLTAGE_PATH"/in_voltage"$INPUT"_raw)
+        sleep 1
+done
+#+END_SRC
+
+
+Como se observa en el código la única salida que se tiene es mediante un /echo/ y esto es para mostrar
+el valor que se lee del pin.
+
+Para poder usar este pequeño script con el framework, se tiene que ejecutar el programa como sigue.
+
+#+BEGIN_SRC sh :tangle no
+     sensor '##ID_SENSOR' /root/scripts/test.sh
+#+END_SRC
+
+Donde el /##ID_SENSOR/ es el identificador del sensor, este debe de empezar con dos simbolos /##/, el
+segundo parametro es script que se va a ejecutar.
+
+Ahora se mostrara el script de un programa de ejemplo que de igual manera mediante sysfs, se comunica
+a un pin de salida y envia o no voltaje, se puede usar para prender un led o como en nuestro caso para
+hacer ruido usando un buzzer.
+
+
+#+BEGIN_SRC sh :tangle no
+#!/bin/sh
+####
+# Scripts that write 1 or 0 if the voltage value received is
+# greater than 1000
+# 
+# This script only works the GPIOs of the intel galileo gen 2
+#
+# Victor Martinez Sanchez
+###
+
+OUTPUT=$1
+
+# Validate if is given
+if [ "$#" -ne 1 ] ; then
+        echo "Usage: $0 [1-5]"
+        exit 1
+fi
+
+# Validate input between 0 and 5
+if [ "$OUTPUT" -lt 0 -o "$OUTPUT" -gt 5 ] ; then
+	echo "The input must be between 0 and 5, because it is the analog input GPIO"
+	exit 1
+fi
+
+validate_number "$OUTPUT"
+
+# The GPIOs numbers of the analog input are:
+# A0 = 48
+# A1 = 50
+# A2 = 52
+# A3 = 54
+# A4 = 56
+# A5 = 58
+GPIO_OUT_NUMBER=$(($OUTPUT * 2 + 48))
+# Path where the GPIOs are managed
+GPIO_PATH="/sys/class/gpio"
+# Path where we can obtain the value from the GPIO as 
+#  voltage
+VOLTAGE_PATH="/sys/bus/iio/devices/iio:device0"
+
+# unexport if the directory exists then export the
+# GPIO number to use it
+if [ -d "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER" ] ; then
+	echo "$GPIO_OUT_NUMBER" > "$GPIO_PATH"/unexport
+	sleep 1
+fi
+echo "$GPIO_OUT_NUMBER" > "$GPIO_PATH"/export
+
+# Is needed to set the direction of the GPIO
+echo "out" > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/direction
+
+# Catch the signals HUP, INT or TERM to stop to script
+trap "echo 'Exit' ; exit 1" SIGHUP SIGINT SIGTERM
+
+# Get the value and validate it
+while true ; do
+	read VALUE
+	VOLTAGE=$(echo "$VALUE" | awk '$1=="##TEMP" {print $3}')
+	if [ ! -z "$VOLTAGE" ] ; then
+		logger "Voltage: $VOLTAGE"
+		if [ "$VOLTAGE" -gt 1000 ] ; then
+			echo 1 > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/value
+		else
+			echo 0 > "$GPIO_PATH"/gpio"$GPIO_OUT_NUMBER"/value
+		fi
+	fi
+	sleep 1
+done
+#+END_SRC
+
+Como se puede observar el scipt lee de la entrada estandar y filtra el valor del sensor que se ha
+registrado con el id /##TEMP/ y verifica si su valor es o no mayor que 1000.
+
+Este pequeño script como se mencionó lo único que hara es ensender un led (por ejemplo).
+
+Para poder usar este pequeño script con el framework, se tiene que ejecutar el programa como sigue.
+
+#+BEGIN_SRC sh :tangle no
+     notifier /root/scripts/led.sh
+#+END_SRC
+
+
+Para poder usar el programa /sensor/ y /notifier/ se tiene previamente que ejecutar el programa
+/server/ ya que es el encargado de administrar a los sensores y enviar los valores a los notificadores.
+El programa se ejecuta de la siguiente manera.
+
+#+BEGIN_SRC sh :tangle no
+     server
+#+END_SRC
+
+Con esto cada vez que un /sensor/ se registre al /notifier/ se le enviara el valor de los
+sensores.
+
+
+** Instalación
+
+Para poder usar el framework se tiene de 2 opciones:
+
+	- Compilación: El código fuente esta disponible y cuenta con un Makefile con el cual se puede obtener los ejecutables.
+	- Imagen: Se tiene una imagen lista para usarse para las tarjetas de desarrollo /Intel Galileo Gen2/.
+
+
+La compilación deberia de funcionar en sistemas GNU/Linux ya que se usaron librerias estandar.
+En cuanto a la imagen, esta fue generada usando la herramienta /Buildroot/. y esta lista para
+que se inserte en una microSD y se inicie la tarjeta con la imagen.
+
+
+
+#+BEGIN_CENTER
+Sin mas que agregar me quedo a sus ordenes, cualquier duda me pueden escribir a mi correo
+mvictor619@live.com.mx
+
+/– Martínez Sánchez Víctor/
+#+END_CENTER

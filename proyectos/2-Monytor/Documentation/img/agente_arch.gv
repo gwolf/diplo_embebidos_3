@@ -1,0 +1,75 @@
+digraph Server{
+		// dot -Gnewrank -Tpng test.gv > out.png
+		Monyt [label="Monytor"];
+
+		subgraph g_SensorExec {
+			SExec [label="Sensor Exec"];
+			E1 [label="Fork", shape=box];
+			EL [label="Hijo"];
+			ER [label="Padre"];
+			EL1 [label="Exec", shape=box];
+			ER1 [label="Leer", shape=box];
+			ER2 [label="Enviar", shape=box];
+		}
+
+		subgraph g_Server {
+			Server [label="Servidor"];
+			S1 [label="Creación de hilos", shape=box];
+			Sensor [label="Servidor Sensores"];
+			Notifier [label="Servidor Notificadores"];
+		}
+
+		subgraph cluster_Sensor {
+			label="Poll de sensores";
+			L1 [label="Socket", shape=box];
+			L2 [label="Recibir sensores", shape=box];
+		}
+		subgraph cluster_Notifier {
+			label="Poll de notificadores";
+			R1 [label="Socket", shape=box];
+			R2 [label="Enviar sensores", shape=box];
+		}
+
+		subgraph g_NotifierExec {
+			NExec [label="Notificador Exec"];
+			N1 [label="Fork", shape=box];
+			NL [label="Padre"];
+			NR [label="Hijo"];
+			NL1 [label="Recibir", shape=box];
+			NR1 [label="Exec", shape=box];
+		}
+
+		{rank=same; SExec, Server, NExec;}
+		{rank=same; E1, S1, N1;}
+		{rank=same; EL, ER, Sensor, Notifier, NL, NR;}
+                {rank=same; EL1, ER1, L1, R1, NR1;}
+		{rank=same; ER2->L2;}
+		{rank=same; R2->NL1;}
+
+		Monyt->SExec
+		Monyt->Server
+		Monyt->NExec
+
+		SExec->E1 [fontcolor=darkgreen];
+		E1->EL [fontcolor=darkgreen];
+		E1->ER [fontcolor=darkgreen];
+		EL->EL1 [fontcolor=darkgreen];
+		ER->ER1 [fontcolor=darkgreen];
+		ER1->ER2 [fontcolor=darkgreen];
+
+		Server->S1 [fontcolor=darkgreen];
+		S1->Sensor [fontcolor=darkgreen];
+		Sensor->L1 [fontcolor=darkgreen];
+		L1->L2 [fontcolor=darkgreen];
+
+		S1->Notifier [fontcolor=darkgreen];
+		Notifier->R1 [fontcolor=darkgreen];
+		R1->R2 [fontcolor=darkgreen];
+
+		NExec->N1 [fontcolor=darkgreen];
+		N1->NL [fontcolor=darkgreen];
+		N1->NR [fontcolor=darkgreen];
+		NL->NL1 [fontcolor=darkgreen];
+		NR->NR1 [fontcolor=darkgreen];
+
+}
