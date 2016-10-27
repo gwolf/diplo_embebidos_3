@@ -1,3 +1,3 @@
 # Manual Técnico
 
-El manual técnico se encuentra en el archivo org.
+El manual se encuentra en [este](TechManual.org) archivo.

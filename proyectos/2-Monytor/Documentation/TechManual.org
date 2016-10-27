@@ -15,13 +15,11 @@ En la siguiente tabla se pueden observar los temas a tratar en
 |-----------------------------------------------------------------+--------|
 | [[TechManual.org#introducción][Introducción]]                                                  |        |
 |-----------------------------------------------------------------+--------|
-| [[TechManual.org#analisis][Analisis]]                                                      |        |
+| [[TechManual.org#arquitecture][Arquitectura]]                                                      |        |
 |-----------------------------------------------------------------+--------|
 | [[TechManual.org#implementación][Implementación]]                                                |        |
 |-----------------------------------------------------------------+--------|
-| *Aplicación*                                                    |        |
-|-----------------------------------------------------------------+--------|
-| *Conclusiones*                                                  |        |
+| [[TechManual.org#instalación][Instalación]]                                                |        |
 |-----------------------------------------------------------------+--------|
 
 
@@ -40,9 +38,9 @@ les facilite la integración de estos, y asi solamente centrarse en las variable
 que quiere sensar y el que va a hacer despues con estos datos obtenidos.
 
 
-** Analisis
+** Arquitectura
 
-Como se describio en la Introduccion las aplicaciones embebidas que identificamos
+Como se describió en la Introducción las aplicaciones embebidas que identificamos
 requieren en general de 2 agentes, el /sensor/ el /actuador/ para que se pueda
 facilidar la integración de estos, se requiere el uso de un tercer agente
 el cual se llamara /servidor/, a continuación se describiran estos 3 agentes
@@ -82,8 +80,9 @@ mezclar toda la funcionalidad se podria modularizar el sistema a desarrollar.
 
 ** Implementación
 
-En esta sección se detallara como añadir un programa sensor y un notificador al framework desarrollado,
-esto con el fin de mostrar la facilidad con la cual se puede interactuar con el sistema.
+En esta sección se detallara como añadir un programa sensor y un notificador al framework
+desarrollado, esto con el fin de mostrar la facilidad con la cual se puede interactuar con
+el sistema.
 
 Para comenzar se mostrara un pequeño script en /bash/ que lee el valor de un pin analogico en
 una tarjeta de desarrollo /Intel Galileo Gen2/. El script lee el valor de voltaje en un pin 
@@ -253,11 +252,27 @@ El programa se ejecuta de la siguiente manera.
      server
 #+END_SRC
 
+Con esto cada vez que un /sensor/ se registre al /notifier/ se le enviara el valor de los
+sensores.
+
+
+** Instalación
+
+Para poder usar el framework se tiene de 2 opciones:
+
+	Compilación: El código fuente esta disponible y cuenta con un Makefile con el cual se puede obtener los ejecutables.
+	Imagen: Se tiene una imagen lista para usarse para las tarjetas de desarrollo /Intel Galileo Gen2/.
+
+
+La compilación deberia de funcionar en sistemas GNU/Linux ya que se usaron librerias estandar.
+En cuanto a la imagen, esta fue generada usando la herramienta /Buildroot/. y esta lista para
+que se inserte en una microSD y se inicie la tarjeta con la imagen.
 
 
 
 #+BEGIN_CENTER
-¡Mucha suerte!
+Sin mas que agregar me quedo a sus ordenes, cualquier duda me pueden escribir a mi correo
+mvictor619@live.com.mx
 
 /– Martínez Sánchez Víctor/
 #+END_CENTER
