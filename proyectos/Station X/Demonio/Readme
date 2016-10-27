@@ -1,0 +1,7 @@
+Para usar este demonio primero debemos asegurarnos que el programa readADC.py tiene permisos de ejecucion.
+
+Para ejecutar el demonio se requieres que
+
+sudo update-rc.d /etc/init.d/fotomatond defaults
+
+
