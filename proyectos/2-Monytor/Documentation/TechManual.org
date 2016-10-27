@@ -15,7 +15,7 @@ En la siguiente tabla se pueden observar los temas a tratar en
 |-----------------------------------------------------------------|
 | [[TechManual.org#introducción][Introducción]]                   |
 |-----------------------------------------------------------------|
-| [[TechManual.org#arquitecture][Arquitectura]]                   |
+| [[TechManual.org#arquitectura][Arquitectura]]                   |
 |-----------------------------------------------------------------|
 | [[TechManual.org#implementación][Implementación]]               |
 |-----------------------------------------------------------------|
