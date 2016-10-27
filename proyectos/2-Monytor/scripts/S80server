@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Start monyt server
+#
+# Victor Martinez Sanchez
+
+case "$1" in
+  start)
+	echo "Starting Monyt Server script..."
+	server &>/tmp/sensor.log  &   # Execute the server in background
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

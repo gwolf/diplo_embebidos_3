@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Start led notifier as monyt client
+#
+# Victor Martinez Sanchez
+
+case "$1" in
+  start)
+	echo "Starting Led notifier as monyt client..."
+	notifier /root/scripts/led.sh &>/tmp/led.log &   # Execute the led notifier
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
