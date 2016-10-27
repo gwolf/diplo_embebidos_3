@@ -10,17 +10,17 @@ y realizar alguna acción con las variables sensadas.
 
 En la siguiente tabla se pueden observar los temas a tratar en
 
-|-----------------------------------------------------------------+--------|
-| Contenido                                                       | Liga   |
-|-----------------------------------------------------------------+--------|
-| [[TechManual.org#introducción][Introducción]]                                                  |        |
-|-----------------------------------------------------------------+--------|
-| [[TechManual.org#arquitecture][Arquitectura]]                                                      |        |
-|-----------------------------------------------------------------+--------|
-| [[TechManual.org#implementación][Implementación]]                                                |        |
-|-----------------------------------------------------------------+--------|
-| [[TechManual.org#instalación][Instalación]]                                                |        |
-|-----------------------------------------------------------------+--------|
+|-----------------------------------------------------------------|
+| Contenido                                                       |
+|-----------------------------------------------------------------|
+| [[TechManual.org#introducción][Introducción]]                   |
+|-----------------------------------------------------------------|
+| [[TechManual.org#arquitecture][Arquitectura]]                   |
+|-----------------------------------------------------------------|
+| [[TechManual.org#implementación][Implementación]]               |
+|-----------------------------------------------------------------|
+| [[TechManual.org#instalación][Instalación]]                     |
+|-----------------------------------------------------------------|
 
 
 ** Introducción
@@ -260,8 +260,8 @@ sensores.
 
 Para poder usar el framework se tiene de 2 opciones:
 
-	Compilación: El código fuente esta disponible y cuenta con un Makefile con el cual se puede obtener los ejecutables.
-	Imagen: Se tiene una imagen lista para usarse para las tarjetas de desarrollo /Intel Galileo Gen2/.
+	- Compilación: El código fuente esta disponible y cuenta con un Makefile con el cual se puede obtener los ejecutables.
+	- Imagen: Se tiene una imagen lista para usarse para las tarjetas de desarrollo /Intel Galileo Gen2/.
 
 
 La compilación deberia de funcionar en sistemas GNU/Linux ya que se usaron librerias estandar.
