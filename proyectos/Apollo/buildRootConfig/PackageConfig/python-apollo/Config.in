@@ -1,0 +1,4 @@
+config BR2_PACKAGE_PYTHON_APOLLO
+        bool "python-apollo"
+        help
+          This is a comment that explains what apollo is.
