@@ -1,0 +1,71 @@
+#!/bin/bash
+
+######################################  INFO  ####################################
+#
+# Provides:		Spaceship
+# Required-Start: 	$smbus
+# Required-Stop: 	$smbus
+# Default-Start: 	2 3 4 5
+# Default-Stop: 	0 1 6
+# Short-Description: 	Control de una nave espacial.
+# Description:		Con el uso de un giroscopio se puede controlar una nave
+#			espacial que se puede visualizar en una matriz de leds
+#
+##################################################################################
+
+
+DIR=/usr/lib/python2.7/site-packages/
+DAEMON=$DIR/Spaceship.py
+DAEMON_NAME=Spaceship
+DAEMON_USER=root
+
+PIDFILE=/var/run/$DAEMON_NAME.pid
+PID=$(cat $PIDFILE)
+
+do_start() {
+	start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON 
+	}
+
+do_stop() {
+	start-stop-daemon --stop --background --pidfile $PIDFILE --retry 10
+	}
+
+case "$1" in 
+	start) 
+		if [ ! -z $PID ] ; then
+			if [ -d /proc/$PID ] ; then 
+				echo "Error: El proceso ($PID) ya existe"
+				exit 1
+			fi
+		fi
+		echo "Levantando el demonio $DAEMON_NAME..."
+			do_start
+	;;
+	stop) 
+		if [ -d /proc/$PID ] ; then
+			echo "Deteniendo demonio $DAEMON_NAME ($PID)"
+			do_stop
+		else
+			"El demonio $PID ya no esta corriendo"
+			exit 0
+		fi
+		sleep 1 
+		if [ -d /proc/$PID ] ; then 
+			echo "El demonio $DAEMON_NAME ($PID) sigue corriendo"
+			echo "Habra que cortarle las piernas"
+			kill -KILL $PID
+		fi
+	;;
+
+	status)
+		if [ -d /proc/$PID ] ; then 
+			echo "$DAEMON_NAME ($PID) corrienndo"
+		fi
+	;;
+
+	*)
+		echo "Usando: /etc/init.d/$DAEMON_NAME {start|stop|status}"
+	;;
+
+esac
+exit 0 
