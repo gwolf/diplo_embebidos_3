@@ -1,0 +1,10 @@
+Package: MiPaquete
+Version: 0.3.1
+Description: Paquete de calculadora ejemplo para el diplomado de Linux embebido
+Section: extras
+Priority: optional
+Maintainer: Marco Serra no <vura_212@hotail.com>
+License: GPL3+
+Architecture: all
+Homepage: https://github.com/gwolf/diplo_embebidos_3/tree/master/practicas/09.09
+Source: https://github.com/gwolf/diplo_embebidos_3/practicas/09.09/minombre
