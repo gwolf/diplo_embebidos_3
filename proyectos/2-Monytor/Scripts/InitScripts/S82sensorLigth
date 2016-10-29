@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Start light sensor as monyt client
+#
+# Victor Martinez Sanchez
+
+case "$1" in
+  start)
+	echo "Starting Light sensor as monyt client..."
+	sensor '##LIGHT' /root/scripts/light.sh &   # Execute the light sensor
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

@@ -1,0 +1,90 @@
+diff --git a/package/Config.in b/package/Config.in
+index 9399f63..e5d64b9 100644
+--- a/package/Config.in
++++ b/package/Config.in
+@@ -119,6 +119,8 @@ menu "Debugging, profiling and benchmark"
+ endmenu
+ 
+ menu "Development tools"
++	source "package/monytapp/Config.in"
++	source "package/monytsensors/Config.in"
+ 	source "package/binutils/Config.in"
+ 	source "package/bsdiff/Config.in"
+ 	source "package/bustle/Config.in"
+diff --git a/package/monytapp/Config.in b/package/monytapp/Config.in
+new file mode 100644
+index 0000000..d988032
+--- /dev/null
++++ b/package/monytapp/Config.in
+@@ -0,0 +1,4 @@
++config BR2_PACKAGE_MONYTAPP
++	bool "monytapp"
++	help
++	  Paquete de que contiene un framework para poder monitorear de manera sencilla sensores
+diff --git a/package/monytapp/monytapp.mk b/package/monytapp/monytapp.mk
+new file mode 100644
+index 0000000..9c7d349
+--- /dev/null
++++ b/package/monytapp/monytapp.mk
+@@ -0,0 +1,23 @@
++################################################################################
++#
++# Victor Martinez Sanchez
++# Monyt App version 0.5
++#
++################################################################################
++
++MONYTAPP_VERSION = 0.5
++MONYTAPP_SOURCE = monytapp_$(MONYTAPP_VERSION).orig.tar.gz
++MONYTAPP_SITE = https://github.com/MASVictor/diplo_embebidos_3/raw/1016-server-refactor/proyectos/2-Monytor/Server_Client
++MONYTAPP_LICENSE = WTFPL
++
++define MONYTAPP_BUILD_CMDS
++	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) all
++endef
++
++define MONYTAPP_INSTALL_TARGET_CMDS
++	$(INSTALL) -D -m 0755 $(@D)/server $(TARGET_DIR)/usr/bin/server
++	$(INSTALL) -D -m 0755 $(@D)/sensor $(TARGET_DIR)/usr/bin/sensor
++	$(INSTALL) -D -m 0755 $(@D)/notifier $(TARGET_DIR)/usr/bin/notifier
++endef
++
++$(eval $(generic-package))
+diff --git a/package/monytsensors/Config.in b/package/monytsensors/Config.in
+new file mode 100644
+index 0000000..7c2a107
+--- /dev/null
++++ b/package/monytsensors/Config.in
+@@ -0,0 +1,4 @@
++config BR2_PACKAGE_MONYTSENSORS
++	bool "monytsensors"
++	help
++	  Paquete de que contiene 2 modulos a ser usados con el framework monyt
+diff --git a/package/monytsensors/monytapp.mk b/package/monytsensors/monytapp.mk
+new file mode 100644
+index 0000000..7fc9ebe
+--- /dev/null
++++ b/package/monytsensors/monytapp.mk
+@@ -0,0 +1,22 @@
++################################################################################
++#
++# Victor Martinez Sanchez
++# Monyt Sensors version 0.5
++#
++################################################################################
++
++MONYTSENSORS_VERSION = 0.5
++MONYTSENSORS_SOURCE = sensors_$(MONYTSENSORS_VERSION).orig.tar.gz
++MONYTSENSORS_SITE = https://github.com/MASVictor/diplo_embebidos_3/raw/1021-Last-updates-project/proyectos/2-Monytor/Server_Client/sensors
++MONYTSENSORS_LICENSE = WTFPL
++
++define MONYTSENSORS_BUILD_CMDS
++	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) all
++endef
++
++define MONYTSENSORS_INSTALL_TARGET_CMDS
++	$(INSTALL) -D -m 0755 $(@D)/gsm_module $(TARGET_DIR)/usr/bin/gsm_module
++	$(INSTALL) -D -m 0755 $(@D)/gps_module $(TARGET_DIR)/usr/bin/gps_module
++endef
++
++$(eval $(generic-package))

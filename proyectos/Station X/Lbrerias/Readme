@@ -1,0 +1,11 @@
+Estas son las librerias que se utilizaro para nuestro proyecto, estas deberan ser instaladas dentro de las librerias de Python para que el programa puede ser ejecutado.
+
+Las ligas de descarga son:
+
+Para Adafruit_Python_CharLCD 
+
+https://github.com/adafruit/Adafruit_Python_CharLCD 
+
+Para Adafruit_BBIO.ADC
+
+https://github.com/adafruit/adafruit-beaglebone-io-python

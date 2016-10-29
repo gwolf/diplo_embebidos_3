@@ -1,0 +1,10 @@
+Package: mipaquete
+Version: 0.1.0
+Description: Paquete calculadora con funcion factorial
+Section: extras
+Priority: optional
+Maintainer: Samuel Gandarilla <noldo.cirdan@gmail.com>
+License: GPL3+
+Architecture: all
+Homepage: https://github.com/Noldo123
+Source: https://github.com/gwolf/diplo_embebidos_3/practicas/09.24/SGandarill/IPK

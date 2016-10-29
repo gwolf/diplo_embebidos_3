@@ -2,32 +2,35 @@
 
 Para el módulo de *Linux en espacio de usuario*:
 
-| Nombre                        | 20-ago | 27-ago | 9-sep | 10-sep | 23-sep | 24-sep | 1-oct | 8-oct | 15-oct | 22-oct |
-|-------------------------------+--------+--------+-------+--------+--------+--------+-------+-------+--------+--------|
-| Esaú Rojas Ortega             | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Félix Agustín Ruiz Mendoza    | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Héctor Reyes Escamilla        | X      | X      | X     | X      | X      | X      |       | X     |        |        |
-| Marco Silvano Serrano Ramírez | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Mauricio Quijada Jiménez      | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Ricardo Balderas Paredes      | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Rodrigo Galeana Torres        | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Samuel Gandarilla Pérez       | X      | X      |       | X      | X      | X      | X     | X     |        |        |
-| Samuel Quiroz Lima            | X      | X      |       | X      | X      | X      |       | X     |        |        |
-| Víctor Hugo García Ortega     | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
-| Víctor Martínez Sánchez       | X      | X      | X     | X      | X      | X      | X     | X     | X      |        |
+| Nombre                        | 20-ago | 27-ago | 9-sep | 10-sep | 23-sep | 24-sep | 1-oct | 8-oct | 15-oct | 22-oct | Total |
+|-------------------------------+--------+--------+-------+--------+--------+--------+-------+-------+--------+--------+-------|
+| Esaú Rojas Ortega             | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Félix Agustín Ruiz Mendoza    | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Héctor Reyes Escamilla        | X      | X      | X     | X      | X      | X      |       | X     |        | X      |     8 |
+| Marco Silvano Serrano Ramírez | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Mauricio Quijada Jiménez      | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Ricardo Balderas Paredes      | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Rodrigo Galeana Torres        | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Samuel Gandarilla Pérez       | X      | X      |       | X      | X      | X      | X     | X     |        | X      |     8 |
+| Samuel Quiroz Lima            | X      | X      |       | X      | X      | X      |       | X     |        | X      |     7 |
+| Víctor Hugo García Ortega     | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+| Víctor Martínez Sánchez       | X      | X      | X     | X      | X      | X      | X     | X     | X      | X      |    10 |
+#+TBLFM: @2$>..@>$>='(length (delete "0" '($2..$>>)))
+
 
 Para el módulo de *Arranque del sistema*:
 
-| Nombre                        | 30-sep | 7-oct | 14-oct | 21-oct |
-|-------------------------------+--------+-------+--------+--------|
-| Esaú Rojas Ortega             | X      | X     | X      |        |
-| Félix Agustín Ruiz Mendoza    | X      | X     | X      |        |
-| Héctor Reyes Escamilla        | X      | X     |        |        |
-| Marco Silvano Serrano Ramírez | X      | X     | X      |        |
-| Mauricio Quijada Jiménez      | X      | X     | X      |        |
-| Ricardo Balderas Paredes      | X      | X     | X      |        |
-| Rodrigo Galeana Torres        | X      | X     | X      |        |
-| Samuel Gandarilla Pérez       | X      | X     | X      |        |
-| Samuel Quiroz Lima            | X      | X     | X      |        |
-| Víctor Hugo García Ortega     | X      | X     | X      |        |
-| Víctor Martínez Sánchez       | X      | X     | X      |        |
+| Nombre                        | 30-sep | 7-oct | 14-oct | 21-oct | Total |
+|-------------------------------+--------+-------+--------+--------+-------|
+| Esaú Rojas Ortega             | X      | X     | X      |        |     3 |
+| Félix Agustín Ruiz Mendoza    | X      | X     | X      |        |     3 |
+| Héctor Reyes Escamilla        | X      | X     |        |        |     2 |
+| Marco Silvano Serrano Ramírez | X      | X     | X      |        |     3 |
+| Mauricio Quijada Jiménez      | X      | X     | X      |        |     3 |
+| Ricardo Balderas Paredes      | X      | X     | X      |        |     3 |
+| Rodrigo Galeana Torres        | X      | X     | X      |        |     3 |
+| Samuel Gandarilla Pérez       | X      | X     | X      |        |     3 |
+| Samuel Quiroz Lima            | X      | X     | X      |        |     3 |
+| Víctor Hugo García Ortega     | X      | X     | X      |        |     3 |
+| Víctor Martínez Sánchez       | X      | X     | X      |        |     3 |
+#+TBLFM: @2$>..@>$>='(length (delete "0" '($2..$>>)))

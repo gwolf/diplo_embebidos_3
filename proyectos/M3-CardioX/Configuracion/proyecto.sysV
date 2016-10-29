@@ -1,0 +1,47 @@
+#!/bin/ash
+
+MI_PID=$(cat /home/proyecto.pid)
+
+case $1 in
+	start)
+		if [ ! -z $MI_PID ] ; then
+			if [ -d /proc/$MI_PID ] ; then
+				echo "Error: El proceso $MI_PID ya esta corriendo"
+				exit 1
+			fi
+		fi
+		echo "Levantando demonio"
+		/usr/local/bin/principalProyecto
+	;;
+	stop)
+		if [ -d /proc/$MI_PID ] ; then
+			echo "Deteniendo demonio $MI_PID..."
+			kill -TERM $MI_PID 
+		else
+			echo "El demonio $MI_PID ya no esta corriendo"
+			exit 0
+		fi
+		sleep 1
+		if [ -d /proc/$MI_PID ] ; then
+			echo "El demono $MI_PID sigue corriendo"
+			echo "Deteniendo demonio $MI_PID a la mala.."	
+			kill -KILL $MI_PID
+		fi
+	;;
+	status)
+		if [ -z $MI_PID ] ; then
+			echo "no hay PID"
+			exit 0
+		fi
+		if [ -d /proc/$MI_PID ] ; then
+			echo "$MI_PID corriendo (ok)"
+		else
+			echo "El proceso $MI_PID no esta corriendo"
+		fi
+	;;
+	*)
+	echo "Esto se usa asi: $0 [start|stops|status]"
+	;;
+esac
+
+exit 0
