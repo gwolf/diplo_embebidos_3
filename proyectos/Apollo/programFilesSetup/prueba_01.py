@@ -5,23 +5,25 @@ import time
 from conf_accM import bus
 from lib_m8x8 import device  
 
-device = device()
-device.brightness(15)
+device = device()		#Creacion de un objeto que instancia la funcion device()
+device.brightness(15)	#Seleccion del brillo de los leds
 x_Axis = 0
 y_Axis = 0
 
+time.sleep(15)
 
 while True:
 
-    data = bus.read_i2c_block_data(0x1D, 0x00, 7)
+    data = bus.read_i2c_block_data(0x1D, 0x00, 7)	#Se almacena en data la lectura del bus i2c (acelerometro)
 
     # Convert the data
-    xAccl = (data[1] * 256 + data[2]) / 16
-    if xAccl > 2047 :
+    xAccl = (data[1] * 256 + data[2]) / 16			#Se hace una transformacion de los valores que manda el acelerometro
+    if xAccl > 2047 :								#en valores entre 1000 y 1000, tanto eje x como eje y					
             xAccl -= 4096
-
+    										        #Se divide nuestros 2000 valores en 8 rangos, correspondiente a la 	
+													#coordenada que se mapeara en la matriz de leds
     if (-750 > xAccl):
-        x_Axis = 0
+        x_Axis = 1
         print "Imprime: %d" %x_Axis
     elif( -500 > xAccl and xAccl > -749):
         x_Axis = 1
@@ -51,7 +53,7 @@ while True:
             yAccl -= 4096
 
     if (-750 > yAccl):
-        y_Axis = 0
+        y_Axis = 1
         print "Imprime: %d" %y_Axis
     elif( -500 > yAccl and yAccl > -749):
         y_Axis = 1
@@ -72,35 +74,22 @@ while True:
         y_Axis = 6
         print "Imprime: %d" %y_Axis
     elif yAccl > 750:
-        y_Axis = 7
+        y_Axis = 6
         print "Imprime: %d" %y_Axis
-
+												#Se mandan los valores de las coordenadas al buffer para poder dibujar el led 
+												#en la posicion deseada	
     
-##    device.pixel(4, 0, 1, redraw=False)
-##    device.flush()
-##    time.sleep(1)
-##    device.pixel(4, 0, 0, redraw=False)
-##    device.flush()
-##    time.sleep(1)
-##    device.pixel(0, 4, 0, redraw=False)
-##    device.flush()
-##    time.sleep(1)
-##    device.pixel(0, 4, 1, redraw=False)
-##    device.flush()
-##    time.sleep(1)
-##        
-                
     device.pixel( x_Axis , y_Axis , 1, redraw=False)
     device.pixel( x_Axis -1 , y_Axis  , 1, redraw=False)
     device.pixel( x_Axis, y_Axis +1 , 1, redraw=False)
     device.pixel( x_Axis, y_Axis -1 , 1, redraw=False)
-    device.flush()
+    device.flush()										#Manda a llamar el write de spi para escribir la informacion contenida en el buffer		
     time.sleep(0.01)
-    device.pixel( x_Axis , y_Axis, 0, redraw=False)
+    device.pixel( x_Axis , y_Axis, 0, redraw=False)		#Apaga los leds para poder esperar nueva informacion sin perder la forma de la nave
     device.pixel( x_Axis -1, y_Axis, 0, redraw=False)
     device.pixel( x_Axis, y_Axis +1, 0, redraw=False)
     device.pixel( x_Axis, y_Axis -1 ,0, redraw=False)
     device.flush()
-    time.sleep(0.01)  
+    time.sleep(0.01)  									#Los sleeps sirven para dar tiempo entre nuevas posiciones.
     
 

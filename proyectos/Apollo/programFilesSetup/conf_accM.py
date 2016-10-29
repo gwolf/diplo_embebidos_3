@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import smbus
+from smbus import smbus
 
 # Get I2C bus
 bus = smbus.SMBus(1)

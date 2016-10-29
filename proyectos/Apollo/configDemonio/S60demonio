@@ -14,9 +14,9 @@
 ##################################################################################
 
 
-DIR=/usr/lib/python2.7/site-packages/
-DAEMON=$DIR/Spaceship.py
-DAEMON_NAME=Spaceship
+DIR=/usr/lib/python2.7/site-packages
+DAEMON=$DIR/prueba_01.py
+DAEMON_NAME=prueba_01
 DAEMON_USER=root
 
 PIDFILE=/var/run/$DAEMON_NAME.pid
@@ -39,6 +39,8 @@ case "$1" in
 			fi
 		fi
 		echo "Levantando el demonio $DAEMON_NAME..."
+			sleep 30
+			modprobe i2c-dev
 			do_start
 	;;
 	stop) 
