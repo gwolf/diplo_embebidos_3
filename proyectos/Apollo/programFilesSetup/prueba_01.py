@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import time
@@ -22,28 +22,28 @@ while True:
 
     if (-750 > xAccl):
         x_Axis = 0
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( -500 > xAccl and xAccl > -749):
         x_Axis = 1
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( -250 > xAccl and xAccl > -499):
         x_Axis = 2
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( 0 > xAccl and xAccl > -249):
         x_Axis = 3
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( 0 < xAccl and xAccl < 250):
         x_Axis = 4
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( 251 < xAccl and xAccl < 500):
         x_Axis = 5
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif( 501 < xAccl and xAccl < 750):
         x_Axis = 6
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     elif xAccl > 750:
         x_Axis = 7
-        print "Imprime: %d" %x_Axis
+        print "Imprime X: %d" %x_Axis
     
     
     yAccl = (data[3] * 256 + data[4]) / 16
@@ -52,28 +52,28 @@ while True:
 
     if (-750 > yAccl):
         y_Axis = 0
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif( -500 > yAccl and yAccl > -749):
         y_Axis = 1
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif( -250 > yAccl and yAccl > -499):
         y_Axis = 2
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif( 0 > yAccl and yAccl > -249):
         y_Axis = 3
-        print "Imprime: %d" %x_Axis
+        print "Imprime Y: %d" %x_Axis
     elif( 0 < yAccl and yAccl < 250):
         y_Axis = 4
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif( 251 < yAccl and yAccl < 500):
         y_Axis = 5
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif( 501 < yAccl and yAccl < 750):
         y_Axis = 6
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
     elif yAccl > 750:
         y_Axis = 7
-        print "Imprime: %d" %y_Axis
+        print "Imprime Y: %d" %y_Axis
 
     
 ##    device.pixel(4, 0, 1, redraw=False)
