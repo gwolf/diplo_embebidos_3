@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import smbus
+from smbus import smbus
 
 
 bus = smbus.SMBus(1)										#OBTENEMOS BUS DE PROTOCOLO I2C 
