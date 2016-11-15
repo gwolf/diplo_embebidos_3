@@ -13,15 +13,16 @@
 #
 ##################################################################################
 
-
+#Se define donde se encuentra nuestro programa que queremos que corra desde un inicio
 DIR=/usr/lib/python2.7/site-packages
+#Nuestro demonio se llama igual que nuestro programa prueba_01 y queremos que corra con privilegios de root
 DAEMON=$DIR/prueba_01.py
 DAEMON_NAME=prueba_01
 DAEMON_USER=root
-
+#En esta ruta se encuentra el pid de la aplicacion, que servira para poder manipularla.
 PIDFILE=/var/run/$DAEMON_NAME.pid
 PID=$(cat $PIDFILE)
-
+#Start-stop-daemon son comando para la manipulacion de demonios
 do_start() {
 	start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --chuid $DAEMON_USER --startas $DAEMON 
 	}
@@ -29,7 +30,7 @@ do_start() {
 do_stop() {
 	start-stop-daemon --stop --background --pidfile $PIDFILE --retry 10
 	}
-
+#3 casos start, stop y status
 case "$1" in 
 	start) 
 		if [ ! -z $PID ] ; then
@@ -39,7 +40,9 @@ case "$1" in
 			fi
 		fi
 		echo "Levantando el demonio $DAEMON_NAME..."
-			sleep 30
+		#en el caso de start se le da tiempo al sistema para que todos los componentes inicien
+		#modprobe 12c-dev nos permite inicializar la comuniacion i2c
+			sleep 15
 			modprobe i2c-dev
 			do_start
 	;;
